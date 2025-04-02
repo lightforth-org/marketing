@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaCircle } from "react-icons/fa";
@@ -7,7 +7,7 @@ import { FaCircle } from "react-icons/fa";
 const FeatureSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const slideRef = useRef(null);
+  const slideRef = useRef<HTMLDivElement | null>(null);
 
   const slides = [
     {
@@ -17,36 +17,39 @@ const FeatureSection = () => {
     },
     {
       id: 2,
-      image: "/images/dashboard.png",
+      image: "/images/dashboard2.png",
       alt: "Resume Builder Interface",
     },
     {
       id: 3,
-      image: "/images/dashboard.png",
+      image: "/images/dashboard3.png",
       alt: "Job Matches Interface",
     },
   ];
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     setTimeout(() => setIsAnimating(false), 500);
-  };
+  }, [isAnimating, slides.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
     setTimeout(() => setIsAnimating(false), 500);
-  };
+  }, [isAnimating, slides.length]);
 
-  const goToSlide = (index) => {
-    if (isAnimating || index === currentSlide) return;
-    setIsAnimating(true);
-    setCurrentSlide(index);
-    setTimeout(() => setIsAnimating(false), 500);
-  };
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (isAnimating || index === currentSlide) return;
+      setIsAnimating(true);
+      setCurrentSlide(index);
+      setTimeout(() => setIsAnimating(false), 500);
+    },
+    [isAnimating, currentSlide]
+  );
 
   // Auto-slide effect
   useEffect(() => {
@@ -54,21 +57,21 @@ const FeatureSection = () => {
       nextSlide();
     }, 5000);
     return () => clearInterval(interval);
-  }, [currentSlide]);
+  }, [nextSlide]);
 
   return (
-    <div className=" py-16 md:py-24">
+    <div className="py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-900">
-            Your current job search strategy isn't working. That's why you're
-            here.
+        <div className="max-w-2xl mx-auto text-center mb-16">
+          <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold text-gray-900">
+            Your current job search strategy isn&apos;t working. That&apos;s why
+            you&apos;re here.
           </h2>
         </div>
 
         <div className="relative max-w-5xl mx-auto">
           {/* Slider container */}
-          <div className="overflow-hidden rounded-lg shadow-xl">
+          <div className="overflow-hidden">
             <div
               ref={slideRef}
               className="flex transition-transform duration-500 ease-in-out"
@@ -93,6 +96,7 @@ const FeatureSection = () => {
 
           {/* Navigation arrows */}
           <button
+            type="button"
             className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 z-10"
             onClick={prevSlide}
             aria-label="Previous slide"
@@ -101,6 +105,7 @@ const FeatureSection = () => {
           </button>
 
           <button
+            type="button"
             className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 z-10"
             onClick={nextSlide}
             aria-label="Next slide"
@@ -113,6 +118,7 @@ const FeatureSection = () => {
             {slides.map((_, index) => (
               <button
                 key={index}
+                type="button"
                 onClick={() => goToSlide(index)}
                 className={`focus:outline-none ${
                   currentSlide === index

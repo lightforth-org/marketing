@@ -110,10 +110,10 @@ const PricingWithTestimonials = ({
         <div className="mt-8 text-xs text-gray-300 text-center ">
           <p>
             By continuing, you agree to pay 78.99USD for your plan and agree
-            that if you don't cancel at least 6 days prior to the end of the
-            one-week introductory offer, you will automatically be charged the
-            full price of 78.99 USD every month until you cancel in Settings.
-            Learn more about our cancellation and refund policy in the
+            that if you don&apos;t cancel at least 6 days prior to the end of
+            the one-week introductory offer, you will automatically be charged
+            the full price of 78.99 USD every month until you cancel in
+            Settings. Learn more about our cancellation and refund policy in the
             Subscription Terms
           </p>
           <p className="mt-10 max-w-lg mx-auto">

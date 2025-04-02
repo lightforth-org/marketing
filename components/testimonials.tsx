@@ -76,14 +76,14 @@ const TestimonialCarousel = () => {
       <div className="max-w-7xl mx-auto text-center">
         {/* Heading */}
 
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-900">
+        <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold text-gray-900">
           What Our Users Are Saying
         </h2>
 
         {/* Subheading */}
         <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-          Don't just take our word for it, listen to applicants who have found
-          jobs on LightForth.
+          Don&apos;t just take our word for it, listen to applicants who have
+          found jobs on LightForth.
         </p>
 
         {/* Carousel Container */}
@@ -94,9 +94,9 @@ const TestimonialCarousel = () => {
               {testimonialSlides[currentSlide].map((testimonial, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 md:p-6 rounded-lg flex flex-col"
+                  className="bg-white p-4 md:p-6 space-y-5 rounded-lg flex flex-col"
                 >
-                  <div className="text-[#0494FC] mb-2">
+                  <div className="text-[#0494FC] mb-2 px-2 md:px-4">
                     <svg
                       className="h-4 w-4 md:h-6 md:w-6"
                       fill="currentColor"
@@ -105,10 +105,11 @@ const TestimonialCarousel = () => {
                       <path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.039 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H10V18H0Z" />
                     </svg>
                   </div>
-                  <p className="text-sm md:text-base text-gray-800 mb-3 md:mb-4 flex-grow">
+
+                  <p className="text-sm text-left md:text-sm text-gray-800 mb-3 md:mb-4 flex-grow px-2 md:px-4 ">
                     {testimonial.quote}
                   </p>
-                  <div>
+                  <div className="bg-[#f9fafb] border-t-1 border-gray-200 text-left p-2 md:p-4">
                     <p className="font-bold text-gray-900 text-sm md:text-base">
                       {testimonial.name}
                     </p>

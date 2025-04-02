@@ -78,7 +78,7 @@ const RatingsSection = () => {
 };
 
 // Star Icon Component
-const StarIcon = ({ filled }) => {
+const StarIcon = ({ filled }: { filled?: boolean }) => {
   return (
     <svg
       className={`w-5 h-5 ${filled ? "text-yellow-400" : "text-gray-300"}`}
@@ -92,7 +92,7 @@ const StarIcon = ({ filled }) => {
 };
 
 // Leaf Decoration Component
-const LeafDecoration = ({ side }) => {
+const LeafDecoration = ({ side }: { side: "left" | "right" }) => {
   const imgSrc =
     side === "left" ? "/icons/leaf-left.svg" : "/icons/leaf-right.svg";
   return <Image src={imgSrc} alt="Leaf Decoration" width={28} height={89} />;

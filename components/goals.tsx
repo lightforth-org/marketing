@@ -4,7 +4,7 @@ import Image from "next/image";
 const Goals = () => {
   return (
     <div className="py-12 space-y-10 text-center">
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-900">
+      <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold text-gray-900">
         Our Users Meet their Goals
       </h2>
       <Image
