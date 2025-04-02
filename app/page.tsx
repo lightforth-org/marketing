@@ -6,18 +6,9 @@ import Navbar from "@/components/navbar";
 import PricingWithTestimonials from "@/components/pricing/pricing-with-testimonials";
 import RatingsSection from "@/components/ratings";
 import TestimonialCarousel from "@/components/testimonials";
-import Head from "next/head";
 export default function Home() {
   return (
     <div>
-      <Head>
-        <title>Lightforth - Get 5+ Job Offers in 21 Days</title>
-        <meta
-          name="description"
-          content="Flood your inbox with job offers in just 21 days"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Navbar />
       <main>
         <HeroSection />
