@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <div className="bg-white py-12 md:py-16 lg:py-20">
+    <div className="pt-28 pb-12 md:py-16 lg:pt-32 lg:pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-900 mb-2">
@@ -23,7 +23,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      <div className="text-xs text-gray-800 text-center mt-4">
+      <div className="text-xs md:text-md text-gray-800 text-center mt-4">
         Results are not typical. Individual results may vary.
       </div>
     </div>

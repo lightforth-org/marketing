@@ -98,7 +98,7 @@ const PricingWithTestimonials = ({
 
         {/* CTA Button */}
         <div className="mt-8">
-          <button className="w-full bg-[#0494FC] hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-md transition duration-300">
+          <button className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-8 rounded-md transition duration-300">
             Start getting jobs, cancel anytime
           </button>
           <p className="text-xs text-gray-500 text-center mt-2">
