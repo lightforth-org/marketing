@@ -26,13 +26,13 @@ const Testimonial = ({
           {role}, {company}
         </p>
       </div>
-      <div className="relative">
+      <div className="relative flex-shrink-0">
         <Image
           src={imageSrc ?? ""}
           alt="Testimonial"
-          width={80}
-          height={80}
           className="rounded-md"
+          width={60}
+          height={60}
         />
       </div>
     </div>
