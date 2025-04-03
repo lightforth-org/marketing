@@ -1,4 +1,3 @@
-import { useState } from "react";
 import SpecialOffer from "../special-offer";
 import PricingPlan from "./pricing-plan";
 import Testimonial from "./testimonial";
@@ -7,13 +6,15 @@ const PricingWithTestimonials = ({
   heading,
   subHeading,
   tagColor,
+  selectedPlan,
+  setSelectedPlan,
 }: {
   heading: string;
   subHeading: string;
   tagColor: string;
+  selectedPlan: string;
+  setSelectedPlan: (plan: string) => void;
 }) => {
-  const [selectedPlan, setSelectedPlan] = useState<string>("Pro");
-
   // Features for Pro plan
   const proFeatures = [
     "A+ ATS Resume Builder",
@@ -58,8 +59,8 @@ const PricingWithTestimonials = ({
             <PricingPlan
               type="30 day Pro"
               perDay="2.63"
-              formerPrice="254.99 USD"
-              newPrice="119.99 USD"
+              formerPrice="124.99 USD"
+              newPrice="78.99 USD"
               features={proFeatures}
               tagColor={tagColor}
               isSelected={selectedPlan === "Pro"}
@@ -78,8 +79,8 @@ const PricingWithTestimonials = ({
             <PricingPlan
               type="30 day Premium"
               perDay="3.99"
-              formerPrice="124.99 USD"
-              newPrice="78.99 USD"
+              formerPrice="254.99 USD"
+              newPrice="128.99 USD"
               isPopular={true}
               features={premiumFeatures}
               tagColor={tagColor}
@@ -97,7 +98,20 @@ const PricingWithTestimonials = ({
 
         {/* CTA Button */}
         <div className="mt-8">
-          <button className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-8 rounded-md transition duration-300">
+          <button
+            onClick={() =>
+              selectedPlan === "Pro"
+                ? window.open(
+                    "https://careersuccess.lightforth.org/checkout-order-3827",
+                    "_blank"
+                  )
+                : window.open(
+                    "https://careersuccess.lightforth.org/checkout-order-3827-9663",
+                    "_blank"
+                  )
+            }
+            className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-8 rounded-md transition duration-300"
+          >
             Start getting jobs, cancel anytime
           </button>
           <p className="text-xs text-gray-500 text-center mt-2">

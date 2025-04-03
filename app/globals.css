@@ -60,16 +60,19 @@ body {
   }
 }
 
-@keyframes ping {
-  90%,
-  100% {
-    transform: scale(1.8);
+@keyframes radar {
+  0% {
+    transform: rotate(0deg);
     opacity: 0;
   }
-}
-
-@keyframes pulse {
-  50% {
-    opacity: 0.4;
+  5% {
+    opacity: 0.6;
+  }
+  10% {
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
   }
 }

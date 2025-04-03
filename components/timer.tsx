@@ -12,11 +12,13 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   className,
   onComplete,
 }) => {
-  const [timeLeft, setTimeLeft] = useState(durationInMinutes * 60);
+  const initialTime = durationInMinutes * 60;
+  const [timeLeft, setTimeLeft] = useState(initialTime);
 
   useEffect(() => {
     if (timeLeft <= 0) {
       if (onComplete) onComplete();
+      setTimeLeft(initialTime); // Restart the timer
       return;
     }
 
@@ -25,7 +27,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, onComplete]);
+  }, [timeLeft, onComplete, initialTime]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

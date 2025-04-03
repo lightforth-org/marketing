@@ -7,9 +7,10 @@ import Navbar from "@/components/navbar";
 import PricingWithTestimonials from "@/components/pricing/pricing-with-testimonials";
 import RatingsSection from "@/components/ratings";
 import TestimonialCarousel from "@/components/testimonials";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [selectedPlan, setSelectedPlan] = useState<string>("Pro");
 
   const scrollToSection = () => {
     if (sectionRef.current) {
@@ -27,6 +28,8 @@ export default function Home() {
             heading="Your Personalized Career Plan"
             subHeading="that makes you the candidate recruiters chase."
             tagColor="#1149A6"
+            selectedPlan={selectedPlan}
+            setSelectedPlan={setSelectedPlan}
           />
         </section>
 
@@ -39,6 +42,8 @@ export default function Home() {
           heading="Get 5+ job offers in 21 days."
           subHeading="Cancel when you feel like it."
           tagColor="#1149A6"
+          selectedPlan={selectedPlan}
+          setSelectedPlan={setSelectedPlan}
         />
       </main>
       <Footer />

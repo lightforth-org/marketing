@@ -56,17 +56,20 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
               >
                 <span className="relative z-10">Start Getting Jobs</span>
 
-                {/* Optimized ping animation */}
-                <span
-                  className="absolute inset-0 rounded-md bg-[#0494FC] opacity-40
-    animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] scale-90"
-                ></span>
+                {/* Radar beam animation */}
+                <span className="absolute inset-0 origin-bottom-right">
+                  <span className="absolute top-0 left-0 w-full h-full">
+                    <span
+                      className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-transparent to-white opacity-30 transform rotate-0 animate-[radar_2s_linear_infinite]"
+                      style={{
+                        transformOrigin: "bottom right",
+                      }}
+                    ></span>
+                  </span>
+                </span>
 
-                {/* Optimized pulse animation */}
-                <span
-                  className="absolute -inset-0.5 rounded-lg bg-[#0494FC]/20
-    animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] blur-[2px]"
-                ></span>
+                {/* Subtle glow effect */}
+                <span className="absolute -inset-1 rounded-lg bg-[#0494FC]/20 animate-pulse opacity-70 blur-sm"></span>
               </button>
             </div>
           </div>
