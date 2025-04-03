@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiMenu, FiX } from "react-icons/fi";
+import CountdownTimer from "./timer";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +34,9 @@ const Navbar = () => {
                 <div className="text-sm font-semibold text-black tracking-wide">
                   DISCOUNT IS RESERVED FOR
                 </div>
-                <div className="text-[#0494FC] text-lg font-bold">9:56</div>
+                <div className="text-[#0494FC] text-lg font-bold">
+                  <CountdownTimer durationInMinutes={10} />
+                </div>
               </div>
             </div>
           </div>
