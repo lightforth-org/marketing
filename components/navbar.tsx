@@ -41,7 +41,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="flex items-center w-md">
+          <div className="flex items-center md:w-md">
             <div className="w-full hidden md:block">
               <button className="w-full bg-[#0494FC] hover:bg-[#0494FC]/80 text-white font-medium text-sm  py-3 px-14 cursor-pointer rounded transition duration-300">
                 Start Getting Jobs
