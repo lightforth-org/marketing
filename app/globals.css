@@ -59,3 +59,17 @@ body {
     padding: 0 10px;
   }
 }
+
+@keyframes ping {
+  90%,
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+  }
+}

@@ -8,6 +8,8 @@ const PricingPlan = ({
   newPrice,
   tagColor = "#FFB800",
   features = [],
+  isSelected,
+  onClick,
 }: {
   type: string;
   perDay: string;
@@ -16,8 +18,17 @@ const PricingPlan = ({
   isPopular?: boolean;
   tagColor: string;
   features: string[];
+  isSelected: boolean;
+  onClick: () => void;
 }) => (
-  <div className=" p-6 relative border border-gray-100 rounded-xl overflow-hidden shadow-xl shadow-gray-100">
+  <div
+    onClick={onClick}
+    className={`p-6 relative border rounded-xl overflow-hidden shadow-xl cursor-pointer transition-all duration-300 ${
+      isSelected
+        ? "border-blue-500 shadow-blue-100 bg-blue-50"
+        : "border-gray-100 shadow-gray-100 hover:border-gray-300"
+    }`}
+  >
     {isPopular && (
       <div className="absolute top-0 -right-2 flex justify-center">
         <div
@@ -32,7 +43,11 @@ const PricingPlan = ({
     <div className="flex justify-between items-center mt-2 mb-6">
       <div>
         <div className="flex items-center gap-x-2">
-          <div className="h-4 w-4 rounded-full border-2 border-gray-400 mr-2"></div>
+          <div
+            className={`h-4 w-4 rounded-full border-2 ${
+              isSelected ? "border-blue-500 bg-blue-500" : "border-gray-400"
+            } mr-2`}
+          ></div>
           <div>
             <h3 className="font-medium text-xl">{type}</h3>
             <p className="text-[10px] text-gray-400 space-x-2">

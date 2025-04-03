@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SpecialOffer from "../special-offer";
 import PricingPlan from "./pricing-plan";
 import Testimonial from "./testimonial";
@@ -11,6 +12,8 @@ const PricingWithTestimonials = ({
   subHeading: string;
   tagColor: string;
 }) => {
+  const [selectedPlan, setSelectedPlan] = useState<string>("Pro");
+
   // Features for Pro plan
   const proFeatures = [
     "A+ ATS Resume Builder",
@@ -35,16 +38,15 @@ const PricingWithTestimonials = ({
 
   return (
     <div className="bg-white py-12 md:py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Holiday Offer Banner */}
-        <SpecialOffer />
-
+      {/* Holiday Offer Banner */}
+      <SpecialOffer />
+      <div className="md:max-w-4xl mx-auto sm:px-6 lg:px-8">
         {/* Headline */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0494FC] mb-1">
+        <div className="text-center mb-5 lg:mb-12">
+          <h2 className="text-2xl md:text-4xl font-semibold text-[#0494FC] lg:mb-1">
             {heading}
           </h2>
-          <p className="text-3xl md:text-4xl font-semibold text-gray-800">
+          <p className="text-2xl md:text-4xl font-semibold text-gray-800">
             {subHeading}
           </p>
         </div>
@@ -60,15 +62,18 @@ const PricingWithTestimonials = ({
               newPrice="119.99 USD"
               features={proFeatures}
               tagColor={tagColor}
+              isSelected={selectedPlan === "Pro"}
+              onClick={() => setSelectedPlan("Pro")}
             />
             <Testimonial
-              quote='"I kept get a headache wondering which company to choose from 9 job offers. Stay or go ahead!"'
+              quote='"I kept getting a headache wondering which company to choose from 9 job offers. Stay or go ahead!"'
               role="Product Manager"
               company="Quantum Finance"
               imageSrc="/images/female.png"
             />
           </div>
 
+          {/* Premium Plan */}
           <div className="w-full space-y-5">
             <PricingPlan
               type="30 day Premium"
@@ -78,22 +83,16 @@ const PricingWithTestimonials = ({
               isPopular={true}
               features={premiumFeatures}
               tagColor={tagColor}
+              isSelected={selectedPlan === "Premium"}
+              onClick={() => setSelectedPlan("Premium")}
             />
             <Testimonial
-              quote='"I got 9 job offers but I needed a salary higher than $200K/year. This was the plan that gave me that"'
+              quote='"I got 9 job offers but I needed a salary higher than $200K/year. This was the plan that gave me that."'
               role="Chief Marketing Officer"
               company="Chase"
               imageSrc="/images/male.png"
             />
           </div>
-          {/* Premium Plan */}
-        </div>
-
-        {/* Testimonials */}
-        <div className="mt-8 flex flex-col md:flex-row gap-4">
-          {/* Testimonial 1 */}
-
-          {/* Testimonial 2 */}
         </div>
 
         {/* CTA Button */}
@@ -107,7 +106,7 @@ const PricingWithTestimonials = ({
         </div>
 
         {/* Fine Print */}
-        <div className="mt-8 text-xs text-gray-300 text-center ">
+        <div className="mt-8 text-xs text-gray-300 text-center">
           <p>
             By continuing, you agree to pay 78.99USD for your plan and agree
             that if you don&apos;t cancel at least 6 days prior to the end of

@@ -1,90 +1,73 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 
 // Sample testimonial data
-const allTestimonials = [
-  {
-    quote:
-      "I went from ZERO responses to 5 interviews in just 14 days. I didn't even have to apply myself!",
-    name: "Mark Snowden",
-    title: "Financial Analyst",
-  },
-  {
-    quote:
-      "I wasted months applying on my own. LightForth got me hired in 3 weeks!",
-    name: "Jensen Wedell",
-    title: "Business Manager",
-  },
-  {
-    quote:
-      "I thought this was a scam... until I got 3 offers in 18 days. Best decision I ever made!",
-    name: "Oscar Claren",
-    title: "Software Engineer",
-  },
-  {
-    quote:
-      "Not just 4 job offers, but two above $150k/year. The highest I had ever done was $60k/year with 7 years of experience.",
-    name: "Shawna Piper",
-    title: "Public Health Analyst",
-  },
-  {
-    quote:
-      "After six months of job searching, I found my dream role in just two weeks using LightForth.",
-    name: "Jamie Reynolds",
-    title: "Marketing Director",
-  },
-  {
-    quote:
-      "The personalized job matching saved me countless hours of searching through irrelevant listings.",
-    name: "Terri Wallace",
-    title: "Project Manager",
-  },
-  {
-    quote:
-      "My salary increased by 35% thanks to the negotiation tips provided by LightForth.",
-    name: "Carlos Rodriguez",
-    title: "Data Scientist",
-  },
-  {
-    quote:
-      "The platform's AI matching technology understood my skills better than I did myself!",
-    name: "Aisha Johnson",
-    title: "UX Designer",
-  },
+const testimonialSlides = [
+  [
+    {
+      quote:
+        "I went from ZERO responses to 5 interviews in just 14 days. I didn't even have to apply myself!",
+      name: "Mark Snowden",
+      title: "Financial Analyst",
+    },
+    {
+      quote:
+        "I wasted months applying on my own. LightForth got me hired in 3 weeks!",
+      name: "Jensen Wedell",
+      title: "Business Manager",
+    },
+    {
+      quote:
+        "I thought this was a scam... until I got 3 offers in 18 days. Best decision I ever made!",
+      name: "Oscar Claren",
+      title: "Software Engineer",
+    },
+    {
+      quote:
+        "Not just 4 job offers, but two above $150k/year. To share, the highest I had ever done was $60k/year with 7 years experience.",
+      name: "Shawna Piper",
+      title: "Public Health Analyst",
+    },
+  ],
+  [
+    {
+      quote:
+        "After six months of job searching, I found my dream role in just two weeks using LightForth.",
+      name: "Jamie Reynolds",
+      title: "Marketing Director",
+    },
+    {
+      quote:
+        "The personalized job matching saved me countless hours of searching through irrelevant listings.",
+      name: "Terri Wallace",
+      title: "Project Manager",
+    },
+    {
+      quote:
+        "My salary increased by 35% thanks to the negotiation tips provided by LightForth.",
+      name: "Carlos Rodriguez",
+      title: "Data Scientist",
+    },
+    {
+      quote:
+        "The platform's AI matching technology understood my skills better than I did myself!",
+      name: "Aisha Johnson",
+      title: "UX Designer",
+    },
+  ],
 ];
 
 const TestimonialCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [testimonialsPerSlide, setTestimonialsPerSlide] = useState(4); // Default for desktop
 
-  // Update testimonials per slide based on screen size
-  useEffect(() => {
-    const updateSlides = () => {
-      setTestimonialsPerSlide(window.innerWidth < 640 ? 1 : 4);
-    };
-
-    updateSlides();
-    window.addEventListener("resize", updateSlides);
-    return () => window.removeEventListener("resize", updateSlides);
-  }, []);
-
-  // Group testimonials based on the current layout
-  const groupedTestimonials = [];
-  for (let i = 0; i < allTestimonials.length; i += testimonialsPerSlide) {
-    groupedTestimonials.push(
-      allTestimonials.slice(i, i + testimonialsPerSlide)
-    );
-  }
-
-  // Navigation handlers
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % groupedTestimonials.length);
+    setCurrentSlide((prev) => (prev + 1) % testimonialSlides.length);
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev === 0 ? groupedTestimonials.length - 1 : prev - 1
+      prev === 0 ? testimonialSlides.length - 1 : prev - 1
     );
   };
 
@@ -92,6 +75,7 @@ const TestimonialCarousel = () => {
     <div className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto text-center">
         {/* Heading */}
+
         <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold text-gray-900">
           What Our Users Are Saying
         </h2>
@@ -106,10 +90,8 @@ const TestimonialCarousel = () => {
         <div className="relative">
           {/* Testimonials Grid */}
           <div className="transition-all duration-300 ease-in-out">
-            <div
-              className={`grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 `}
-            >
-              {groupedTestimonials[currentSlide].map((testimonial, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {testimonialSlides[currentSlide].map((testimonial, index) => (
                 <div
                   key={index}
                   className="bg-white p-4 md:p-6 space-y-5 rounded-lg flex flex-col"
@@ -161,7 +143,7 @@ const TestimonialCarousel = () => {
 
         {/* Pagination Dots */}
         <div className="flex justify-center mt-8 space-x-2">
-          {groupedTestimonials.map((_, index) => (
+          {testimonialSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}

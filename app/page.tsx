@@ -38,7 +38,7 @@ export default function Home() {
         <PricingWithTestimonials
           heading="Get 5+ job offers in 21 days."
           subHeading="Cancel when you feel like it."
-          tagColor="#00857A"
+          tagColor="#1149A6"
         />
       </main>
       <Footer />
