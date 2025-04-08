@@ -9,7 +9,7 @@ const SpecialOffer = () => {
         <Image src="/icons/fire.svg" alt="Fire" width={24} height={32} />
         <span className="font-medium text-xs uppercase tracking-widest px-1">
           YOUR SPECIAL HOLIDAY OFFER EXPIRES IN
-          <CountdownTimer durationInMinutes={10} className="pl-1" />
+          <CountdownTimer durationInMinutes={7} className="pl-1" />
         </span>
         <Image src="/icons/fire.svg" alt="Fire" width={24} height={32} />
       </div>
