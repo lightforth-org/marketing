@@ -1,3 +1,4 @@
+import { trackAction } from "@/lib/ampHelper";
 import SpecialOffer from "../special-offer";
 import PricingPlan from "./pricing-plan";
 import Testimonial from "./testimonial";
@@ -99,17 +100,24 @@ const PricingWithTestimonials = ({
         {/* CTA Button */}
         <div className="mt-8">
           <button
-            onClick={() =>
-              selectedPlan === "Pro"
-                ? window.open(
-                    "https://careersuccess.lightforth.org/checkout-order-3827",
-                    "_blank"
-                  )
-                : window.open(
-                    "https://careersuccess.lightforth.org/checkout-order-3827-9663",
-                    "_blank"
-                  )
-            }
+            onClick={() => {
+              trackAction("QValue_Bump", {
+                selectedPlan: selectedPlan,
+                planType: selectedPlan === "Pro" ? "Pro" : "Premium",
+                price: selectedPlan === "Pro" ? 78.99 : 128.99,
+              });
+              if (selectedPlan === "Pro") {
+                window.open(
+                  "https://careersuccess.lightforth.org/checkout-order-3827",
+                  "_blank"
+                );
+              } else {
+                window.open(
+                  "https://careersuccess.lightforth.org/checkout-order-3827-9663",
+                  "_blank"
+                );
+              }
+            }}
             className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-8 rounded-md transition duration-300"
           >
             Start getting jobs, cancel anytime
