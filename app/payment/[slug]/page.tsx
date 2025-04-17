@@ -107,41 +107,45 @@ const Payment = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gray-50">
-      <div className="flex items-center">
-        <div className="flex-shrink-0">
-          <Link href="/">
-            <div className="h-8 w-auto cursor-pointer">
-              <Image
-                src="/images/logo.svg"
-                alt="Lightforth Logo"
-                width={25}
-                height={24}
-                className="h-8 w-auto hidden lg:block"
-              />
-            </div>
-          </Link>
-        </div>
-        <div className="">
-          <Link href="/">
-            <div className="h-8 w-auto cursor-pointer">
-              <Image
-                src="/images/logo-sm.svg"
-                alt="Lightforth Logo small"
-                width={120}
-                height={32}
-                className="h-8 w-auto block lg:hidden"
-              />
-            </div>
-          </Link>
-        </div>
-      </div>
-
       {/* Form Section */}
       <div className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
-          <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
-            Payment Information
-          </h1>
+          <div className="flex justify-center items-center py-3">
+            <div className="flex-shrink-0">
+              <Link href="/">
+                <div className="h-8 w-auto cursor-pointer">
+                  <Image
+                    src="/images/logo.svg"
+                    alt="Lightforth Logo"
+                    width={25}
+                    height={20}
+                    className="h-8 w-auto hidden lg:block"
+                  />
+                </div>
+              </Link>
+            </div>
+            <div className="">
+              <Link href="/">
+                <div className="h-8 w-auto cursor-pointer">
+                  <Image
+                    src="/images/logo-sm.svg"
+                    alt="Lightforth Logo small"
+                    width={120}
+                    height={32}
+                    className="h-8 w-auto block lg:hidden"
+                  />
+                </div>
+              </Link>
+            </div>
+          </div>
+          <div className="mb-6 space-y-2">
+            <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 text-center">
+              Get Started
+            </h1>
+            <p className="text-center text-sm text-gray-700">
+              Enter your details to continue.
+            </p>
+          </div>
 
           {error && (
             <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -167,6 +171,7 @@ const Payment = () => {
                 required
                 disabled={isLoading}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Enter your First Name"
               />
             </div>
 
@@ -187,6 +192,7 @@ const Payment = () => {
                 required
                 disabled={isLoading}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Enter your Last Name"
               />
             </div>
 
@@ -207,6 +213,7 @@ const Payment = () => {
                 required
                 disabled={isLoading}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Enter your email"
               />
             </div>
 
@@ -215,7 +222,7 @@ const Payment = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex items-center justify-center"
+                className="w-full bg-[#0494fc] cursor-pointer hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex items-center justify-center"
               >
                 {isLoading ? (
                   <>
@@ -242,18 +249,13 @@ const Payment = () => {
                     Processing...
                   </>
                 ) : (
-                  "Go to Step 2"
+                  "Go to Step #2"
                 )}
               </button>
             </div>
           </form>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-gray-100 py-4 text-center text-gray-500 text-sm">
-        Lightforth
-      </footer>
     </div>
   );
 };
