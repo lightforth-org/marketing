@@ -2,6 +2,18 @@ import { trackAction } from "@/lib/ampHelper";
 import SpecialOffer from "../special-offer";
 import PricingPlan from "./pricing-plan";
 import Testimonial from "./testimonial";
+import apiService from "@/services/api";
+import { useEffect, useState } from "react";
+
+interface PlanData {
+  _id: string;
+  paymentPlanId: {
+    _id: string;
+    name: string;
+    price: number;
+  };
+  // Other plan fields not needed for this specific implementation
+}
 
 const PricingWithTestimonials = ({
   heading,
@@ -16,7 +28,13 @@ const PricingWithTestimonials = ({
   selectedPlan: string;
   setSelectedPlan: (plan: string) => void;
 }) => {
-  // Features for Pro plan
+  // Add state to store plan data from API
+  const [planData, setPlanData] = useState<{
+    pro?: PlanData;
+    premium?: PlanData;
+  }>({});
+
+  // Features for Pro plan - keep static as requested
   const proFeatures = [
     "A+ ATS Resume Builder",
     "AI Cover Letter Generator",
@@ -27,7 +45,7 @@ const PricingWithTestimonials = ({
     "30-day money back guarantee",
   ];
 
-  // Features for Premium plan
+  // Features for Premium plan - keep static as requested
   const premiumFeatures = [
     "A+ ATS Resume Builder",
     "AI Cover Letter Generator",
@@ -37,6 +55,69 @@ const PricingWithTestimonials = ({
     "Interview Co-Pilot",
     "Exclusive 5+ job offer adoption program",
   ];
+
+  // Fetch plans on component mount
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await apiService.get<{ data: PlanData[] }>(
+          "/account/get-all-plans-for-partner",
+          {},
+          {
+            headers: {
+              "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+            },
+          }
+        );
+
+        if (
+          response &&
+          response?.response?.data &&
+          Array.isArray(response?.response?.data)
+        ) {
+          // We only need the pro (index 0) and premium (index 2) plans
+          setPlanData({
+            pro: response?.response?.data[2],
+            premium: response?.response?.data[0],
+          });
+        }
+      } catch (err) {
+        console.error("Failed to fetch pricing plans:", err);
+        // Silently fail and use fallback URLs if API fails
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+  // Handle CTA button click with dynamic payment URLs
+  const handlePaymentClick = () => {
+    // Track analytics as before
+    trackAction("QValue_Bump", {
+      selectedPlan: selectedPlan,
+      planType: selectedPlan === "Pro" ? "Pro" : "Premium",
+      price: selectedPlan === "Pro" ? 78.99 : 128.99,
+    });
+
+    // Determine which URL to use
+    if (selectedPlan === "Pro") {
+      if (planData.pro?.paymentPlanId?._id) {
+        // Use dynamic URL if plan data is available
+        window.open(`/payment/${planData.pro.paymentPlanId._id}`, "_blank");
+      } else {
+        // Fall back to original URL
+        return;
+      }
+    } else {
+      if (planData.premium?.paymentPlanId?._id) {
+        // Use dynamic URL if plan data is available
+        window.open(`/payment/${planData.premium.paymentPlanId._id}`, "_blank");
+      } else {
+        // Fall back to original URL
+        return;
+      }
+    }
+  };
 
   return (
     <div className="bg-white py-12 md:py-16">
@@ -97,27 +178,10 @@ const PricingWithTestimonials = ({
           </div>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA Button - Modified to use dynamic URLs */}
         <div className="mt-8">
           <button
-            onClick={() => {
-              trackAction("QValue_Bump", {
-                selectedPlan: selectedPlan,
-                planType: selectedPlan === "Pro" ? "Pro" : "Premium",
-                price: selectedPlan === "Pro" ? 78.99 : 128.99,
-              });
-              if (selectedPlan === "Pro") {
-                window.open(
-                  "https://careersuccess.lightforth.org/checkout-order-3827",
-                  "_blank"
-                );
-              } else {
-                window.open(
-                  "https://careersuccess.lightforth.org/checkout-order-3827-9663",
-                  "_blank"
-                );
-              }
-            }}
+            onClick={handlePaymentClick}
             className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-8 rounded-md transition duration-300"
           >
             Start getting jobs, cancel anytime
