@@ -3,6 +3,8 @@
 import apiService from "@/services/api";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const Payment = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -105,6 +107,35 @@ const Payment = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gray-50">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <Link href="/">
+            <div className="h-8 w-auto cursor-pointer">
+              <Image
+                src="/images/logo.svg"
+                alt="Lightforth Logo"
+                width={25}
+                height={24}
+                className="h-8 w-auto hidden lg:block"
+              />
+            </div>
+          </Link>
+        </div>
+        <div className="">
+          <Link href="/">
+            <div className="h-8 w-auto cursor-pointer">
+              <Image
+                src="/images/logo-sm.svg"
+                alt="Lightforth Logo small"
+                width={120}
+                height={32}
+                className="h-8 w-auto block lg:hidden"
+              />
+            </div>
+          </Link>
+        </div>
+      </div>
+
       {/* Form Section */}
       <div className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">

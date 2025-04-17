@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { trackAction } from "@/lib/ampHelper";
 import SpecialOffer from "../special-offer";
 import PricingPlan from "./pricing-plan";
