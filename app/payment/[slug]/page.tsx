@@ -170,7 +170,7 @@ const Payment = () => {
                 onChange={handleChange}
                 required
                 disabled={isLoading}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#0494fc] focus:border-[#0494fc] sm:text-sm"
                 placeholder="Enter your First Name"
               />
             </div>
@@ -191,7 +191,7 @@ const Payment = () => {
                 onChange={handleChange}
                 required
                 disabled={isLoading}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#0494fc] focus:border-[#0494fc] sm:text-sm"
                 placeholder="Enter your Last Name"
               />
             </div>
@@ -212,7 +212,7 @@ const Payment = () => {
                 onChange={handleChange}
                 required
                 disabled={isLoading}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#0494fc] focus:border-[#0494fc] sm:text-sm"
                 placeholder="Enter your email"
               />
             </div>
