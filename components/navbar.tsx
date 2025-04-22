@@ -11,7 +11,7 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
           <div className="flex gap-x-5 lg:gap-x-24 items-center">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Link href="/">
+                <Link href="https://lightforth.org">
                   <div className="h-8 w-auto cursor-pointer">
                     <Image
                       src="/images/logo.svg"

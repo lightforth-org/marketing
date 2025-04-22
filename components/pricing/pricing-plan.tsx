@@ -5,7 +5,6 @@ const PricingPlan = ({
   isBestValue = false,
   formerPrice,
   newPrice,
-  perMonth,
   features = [],
   isSelected,
   onClick,
