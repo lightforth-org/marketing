@@ -1,76 +1,132 @@
 import FeatureItem from "./features-item";
 
 const PricingPlan = ({
-  type,
-  perDay,
   isPopular = false,
+  isBestValue = false,
   formerPrice,
   newPrice,
-  tagColor = "#FFB800",
+  perMonth,
   features = [],
   isSelected,
   onClick,
 }: {
-  type: string;
-  perDay: string;
+  isPopular?: boolean;
+  isBestValue?: boolean;
   formerPrice: string;
   newPrice: string;
-  isPopular?: boolean;
-  tagColor: string;
+  perMonth: string;
   features: string[];
   isSelected: boolean;
   onClick: () => void;
 }) => (
   <div
-    onClick={onClick}
-    className={`p-6 relative border rounded-xl overflow-hidden shadow-xl cursor-pointer transition-all duration-300 ${
-      isSelected
-        ? "border-blue-500 shadow-blue-100 bg-blue-50"
-        : "border-gray-100 shadow-gray-100 hover:border-gray-300"
+    className={`border rounded-lg overflow-hidden shadow-sm ${
+      isSelected ? "border-[#0494FC] shadow-xl  " : "border-gray-200"
     }`}
+    onClick={onClick}
   >
-    {isPopular && (
-      <div className="absolute top-0 -right-2 flex justify-center">
-        <div
-          style={{ backgroundColor: tagColor }}
-          className="text-white text-[10px] font-medium uppercase tracking-widest py-1 px-4 rounded-bl-xl"
-        >
-          Most Popular
-        </div>
+    {/* Top Banner */}
+    {(isPopular || isBestValue) && (
+      <div
+        className={`py-1 px-4 ${
+          isPopular ? "bg-[#16A249]" : "bg-[#0A4063]"
+        } text-white flex items-center`}
+      >
+        {isPopular && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+        )}
+        {isBestValue && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+            />
+          </svg>
+        )}
+        <span className="font-medium text-xs">
+          {isPopular ? "Most Popular" : "Best Value"}
+        </span>
       </div>
     )}
 
-    <div className="flex justify-between items-center mt-2 mb-6">
-      <div>
-        <div className="flex items-center gap-x-2">
-          <div
-            className={`h-4 w-4 rounded-full border-2 ${
-              isSelected ? "border-blue-500 bg-blue-500" : "border-gray-400"
-            } mr-2`}
-          ></div>
-          <div>
-            <h3 className="font-medium text-xl">{type}</h3>
-            <p className="text-[10px] text-gray-400 space-x-2">
-              <span className="line-through">{formerPrice}</span>
-              <span>{newPrice}</span>
+    {/* Main Content */}
+    <div className="p-4">
+      {/* Selection & Price */}
+      <div className="flex items-start justify-between mb-6">
+        <div className="flex items-center">
+          <input
+            type="radio"
+            checked={isSelected}
+            className="h-5 w-5 text-blue-600"
+          />
+          <div className="ml-3 flex items-center gap-x-3">
+            <p className="font-medium p-1 text-xs bg-gray-50 border rounded-sm border-gray-100 text-gray-700">
+              {isBestValue ? "PREMIUM" : "PRO"}
+            </p>
+            <p className="text-gray-500">
+              <span className="line-through text-2xl">{formerPrice}</span>{" "}
+              <span className="text-2xl font-bold text-gray-900">
+                {newPrice}
+              </span>
+              <span className="text-sm">/month</span>
             </p>
           </div>
         </div>
       </div>
-      <div className="text-right !text-[#8F8F8F]">
-        <div className="flex items-start">
-          <span className="text-xs font-medium">$</span>
-          <span className="text-2xl font-bold">{perDay}</span>
-        </div>
-        <p className="text-sm text-gray-500">per day</p>
+
+      {/* Lightning Bolt and 3 Days Free */}
+      <div className="flex items-center border-b border-gray-100 pb-3 mb-3">
+        <svg
+          className="h-5 w-5 text-yellow-500"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <span className="ml-2 font-bold text-xl">3days free</span>
       </div>
+
+      {/* Features List */}
+      <ul className="space-y-3">
+        {features.map((feature, index) => (
+          <FeatureItem key={index} text={feature} />
+        ))}
+      </ul>
     </div>
 
-    <ul className="space-y-3">
-      {features.map((feature, index) => (
-        <FeatureItem key={index} text={feature} />
-      ))}
-    </ul>
+    {/* Footer */}
+    <div className="bg-[#323232] text-gray-500 px-4 py-2 text-sm">
+      After 3 days free access, your subscription starts at {newPrice} billed
+      every monthly.
+      <span className="text-[#B8E1FE] cursor-pointer ml-1">
+        Cancel Anytime*
+      </span>
+    </div>
   </div>
 );
 

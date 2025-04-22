@@ -36,7 +36,7 @@ const Payment = () => {
 
       if (!response.response?.newPartnerUser?.authorizerId) {
         throw new Error(
-          response?.response?.authorizer?.message || "This user already exists "
+          response?.respnose?.authorizer?.message || "This user already exists "
         );
       }
 
