@@ -206,12 +206,10 @@ const PricingWithTestimonials = ({
       {/* Fine Print */}
       <div className="max-w-5xl mx-auto mt-8 text-xs text-[#C2C2C2] text-center">
         <p>
-          By continuing, you agree to pay 78.99USD for your plan and agree that
-          if you don&apos;t cancel at least 6 days prior to the end of the
-          one-week introductory offer, you will automatically be charged the
-          full price of 78.99 USD every month until you cancel in Settings.
-          Learn more about our cancellation and refund policy in the
-          Subscription Terms
+          By continuing, you agree that if you don&apos;t cancel before your 3
+          days free access expires, you will automatically be charged the full
+          price of $79 USD every month until you cancel in Settings. Learn more
+          about our cancellation and refund policy in the Subscription Terms.
         </p>
         <p className="mt-10 max-w-lg mx-auto">
           By continuing, I agree that my credit/debit card data will be stored
