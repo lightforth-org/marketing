@@ -4,7 +4,7 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <footer className="bg-[#B8E1FE] pt-24 pb-12 mt-18 relative">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center ">
+      <div className="w-full md:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center ">
         {/* Badge Icon */}
         <Image
           src="/images/money-back.svg"

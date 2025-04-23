@@ -48,7 +48,7 @@ export default function Home() {
   return (
     <div className="snap-y snap-mandatory">
       <Navbar onClickScroll={scrollToSection} />
-      <main>
+      <main className="px-3 md:px-0">
         <HeroSection />
         <section ref={sectionRef}>
           <PricingWithTestimonials

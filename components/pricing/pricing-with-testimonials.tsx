@@ -100,7 +100,7 @@ const PricingWithTestimonials = ({
     <div className="bg-white py-12 md:py-16">
       {/* Holiday Offer Banner */}
       <SpecialOffer />
-      <div className="md:max-w-3xl mx-auto sm:px-6 lg:px-8">
+      <div className="md:max-w-4xl mx-auto sm:px-6 lg:px-8">
         {/* Headline */}
         {/* Header */}
         <div className="text-center mb-12">
@@ -192,7 +192,7 @@ const PricingWithTestimonials = ({
         >
           Start getting jobs, cancel anytime
         </button>
-        <div className="w-full mt-5 flex flex-col md:flex-row items-start mx-auto text-center justify-center">
+        <div className="w-full mt-5 flex flex-col md:flex-row items-center md:items-start mx-auto text-center justify-center">
           <p className="text-sm text-gray-500 ">We accept:</p>
           <Image
             src={"/images/gateways.png"}

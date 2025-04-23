@@ -19,8 +19,8 @@ const PricingPlan = ({
   onClick: () => void;
 }) => (
   <div
-    className={`border rounded-lg overflow-hidden shadow-sm ${
-      isSelected ? "border-[#0494FC] shadow-xl  " : "border-gray-200"
+    className={`border rounded-lg overflow-hidden shadow-sm cursor-pointer transition ease-in-out ${
+      isSelected ? "border-2 border-[#0494FC] shadow-xl  " : "border-gray-200"
     }`}
     onClick={onClick}
   >
@@ -72,7 +72,7 @@ const PricingPlan = ({
     {/* Main Content */}
     <div className="p-4">
       {/* Selection & Price */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex items-start justify-between mb-3">
         <div className="flex items-center">
           <input
             type="radio"
@@ -96,18 +96,7 @@ const PricingPlan = ({
 
       {/* Lightning Bolt and 3 Days Free */}
       <div className="flex items-center border-b border-gray-100 pb-3 mb-3">
-        <svg
-          className="h-5 w-5 text-yellow-500"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-            clipRule="evenodd"
-          />
-        </svg>
-        <span className="ml-2 font-bold text-xl">3days free</span>
+        <span className="ml-2 font-bold text-xl">⚡️ 3days free</span>
       </div>
 
       {/* Features List */}
@@ -119,7 +108,7 @@ const PricingPlan = ({
     </div>
 
     {/* Footer */}
-    <div className="bg-[#323232] text-gray-500 px-4 py-2 text-sm">
+    <div className="bg-[#323232] text-[#8A8C8D] px-4 py-2 text-sm shadow ">
       After 3 days free access, your subscription starts at {newPrice} billed
       every monthly.
       <span className="text-[#B8E1FE] cursor-pointer ml-1">

@@ -42,7 +42,7 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
               <div className="text-[10px] lg:text-sm font-semibold text-black tracking-wide">
                 DISCOUNT IS RESERVED FOR
               </div>
-              <div className="text-[#0494FC] text-md lg:text-lg font-bold">
+              <div className="text-[#0494FC] text-xl lg:text-lg font-bold">
                 <CountdownTimer durationInMinutes={7} />
               </div>
             </div>
