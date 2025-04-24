@@ -105,7 +105,7 @@ const PricingWithTestimonials = ({
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-semibold text-[#0494FC] mb-1">
-            You&apos;s one click away from interview invites.
+            You&apos;re one click away from interview invites.
           </h1>
           <h2 className="text-4xl font-semibold text-gray-900 mb-4">
             And the trial is on us for free, Cancel anytime
