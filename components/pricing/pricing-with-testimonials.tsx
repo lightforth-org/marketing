@@ -111,7 +111,7 @@ const PricingWithTestimonials = ({
             And the trial is on us for free, Cancel anytime
           </h2>
           <div className="flex flex-col items-center space-y-2 mt-6">
-            <div className="!text-sm flex items-center gap-x-3">
+            <div className="!text-sm flex flex-col md:flex-row items-center gap-x-3">
               <div className="flex items-center">
                 <span className="text-green-500 mr-2">✓</span>
                 <span className="text-gray-500">
@@ -133,14 +133,16 @@ const PricingWithTestimonials = ({
             </div>
 
             <div className="!text-sm flex items-center">
-              <span className="text-green-500 mr-2">✓</span>
+              <span className="text-green-500 mr-2 hidden sm:block">✓</span>
               <span className="text-gray-500">
                 An interview copilot that feeds you the right answers - in your
                 tone - during live calls
               </span>
             </div>
             <div className="!text-sm flex items-center">
-              <span className="text-green-500 mr-2">✓</span>
+              <span className="text-green-500 mr-2 hidden text-center sm:text-justify sm:block">
+                ✓
+              </span>
               <span className="text-gray-500">
                 If you&apos;re not on your way to interviews - cancel anytime,
                 we&apos;ll still be rooting for you
@@ -214,21 +216,21 @@ const PricingWithTestimonials = ({
           Start getting jobs, cancel anytime
         </button>
         <div className="mt-6 space-y-3 flex flex-col items-center">
-          <div className="!text-sm flex items-center">
-            <span className="text-green-500 mr-2">✓</span>
-            <span className="text-gray-500">
+          <div className="!text-sm flex  items-center">
+            <span className="text-green-500 mr-2 hidden sm:block">✓</span>
+            <span className="text-gray-500 text-center sm:">
               71% of users get at least 2 interviews before trial ends
             </span>
           </div>
           <div className="!text-sm flex items-center">
-            <span className="text-green-500 mr-2">✓</span>
-            <span className="text-gray-500">
+            <span className="text-green-500 mr-2 hidden sm:block">✓</span>
+            <span className="text-gray-500 text-center sm:text-justify">
               Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more
             </span>
           </div>
           <div className="!text-sm flex items-center">
-            <span className="text-green-500 mr-2">✓</span>
-            <span className="text-gray-500">
+            <span className="text-green-500 mr-2 hidden sm:block">✓</span>
+            <span className="text-gray-500 text-center sm:text-justify">
               Copilot answers interview questions even if they ask you to share
               your screen
             </span>
