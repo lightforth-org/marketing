@@ -248,7 +248,8 @@ const Payment = () => {
                     Processing...
                   </>
                 ) : (
-                  "Go to Step #2"
+                  // "Go to Step #2"
+                  "Start 3 days for FREE"
                 )}
               </button>
             </div>

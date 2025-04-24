@@ -105,24 +105,45 @@ const PricingWithTestimonials = ({
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-semibold text-[#0494FC] mb-1">
-            Choose a plan
+            You&apos;s one click away from interview invites.
           </h1>
           <h2 className="text-4xl font-semibold text-gray-900 mb-4">
-            No commitment. Cancel anytime
+            And the trial is on us for free, Cancel anytime
           </h2>
           <div className="flex flex-col items-center space-y-2 mt-6">
-            <div className="flex items-center">
-              <span className="text-green-500 mr-2">✓</span>
-              <span className="text-gray-600">3 days free first purchase</span>
+            <div className="!text-sm flex items-center gap-x-3">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                <span className="text-gray-500">
+                  Try everything for 3 days for free
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                <span className="text-gray-500">
+                  ATS resume that gets past bots
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                <span className="text-gray-500">
+                  Auto apply while you sleep
+                </span>
+              </div>
             </div>
-            <div className="flex items-center">
+
+            <div className="!text-sm flex items-center">
               <span className="text-green-500 mr-2">✓</span>
-              <span className="text-gray-600">No upfront payment required</span>
+              <span className="text-gray-500">
+                An interview copilot that feeds you the right answers - in your
+                tone - during live calls
+              </span>
             </div>
-            <div className="flex items-center">
+            <div className="!text-sm flex items-center">
               <span className="text-green-500 mr-2">✓</span>
-              <span className="text-gray-600">
-                Cancel anytime before your trial ends
+              <span className="text-gray-500">
+                If you&apos;re not on your way to interviews - cancel anytime,
+                we&apos;ll still be rooting for you
               </span>
             </div>
           </div>
@@ -192,6 +213,27 @@ const PricingWithTestimonials = ({
         >
           Start getting jobs, cancel anytime
         </button>
+        <div className="mt-6 space-y-3 flex flex-col items-center">
+          <div className="!text-sm flex items-center">
+            <span className="text-green-500 mr-2">✓</span>
+            <span className="text-gray-500">
+              71% of users get at least 2 interviews before trial ends
+            </span>
+          </div>
+          <div className="!text-sm flex items-center">
+            <span className="text-green-500 mr-2">✓</span>
+            <span className="text-gray-500">
+              Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more
+            </span>
+          </div>
+          <div className="!text-sm flex items-center">
+            <span className="text-green-500 mr-2">✓</span>
+            <span className="text-gray-500">
+              Copilot answers interview questions even if they ask you to share
+              your screen
+            </span>
+          </div>
+        </div>
         <div className="w-full mt-5 flex flex-col md:flex-row items-center md:items-start mx-auto text-center justify-center">
           <p className="text-sm text-gray-500 ">We accept:</p>
           <Image

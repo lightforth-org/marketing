@@ -96,7 +96,11 @@ const PricingPlan = ({
 
       {/* Lightning Bolt and 3 Days Free */}
       <div className="flex items-center border-b border-gray-100 pb-3 mb-3">
-        <span className="ml-2 font-bold text-xl">⚡️ 3days free</span>
+        <span className="ml-2 font-bold text-xl">⚡️ 3days free </span>
+        <span className="ml-2 text-red-500 font-bold text-xl">
+          {" "}
+          - no payment now
+        </span>
       </div>
 
       {/* Features List */}
