@@ -67,11 +67,22 @@ const Payment = () => {
       }
 
       const paymentLink = response.response?.paymentLink?.data;
+
       if (!paymentLink) {
         throw new Error("Payment link not found");
       }
 
-      window.open(paymentLink, "_blank");
+      // Create and click a temporary link element
+      const link = document.createElement("a");
+      link.href = paymentLink;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+
+      // Append to the document, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
       return true;
     } catch (error) {
       console.error("Error creating subscription:", error);
