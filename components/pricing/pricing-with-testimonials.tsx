@@ -6,6 +6,8 @@ import Testimonial from "./testimonial";
 import apiService from "@/services/api";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Modal from "../modal";
+import PaymentDetails from "../payment-details";
 
 interface PlanData {
   _id: string;
@@ -32,6 +34,11 @@ const PricingWithTestimonials = ({
     pro?: PlanData;
     premium?: PlanData;
   }>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [planId, setPlanId] = useState<string | null>(null);
+
+  // const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   // Fetch plans on component mount
   useEffect(() => {
@@ -79,18 +86,16 @@ const PricingWithTestimonials = ({
     // Determine which URL to use
     if (selectedPlan === "Pro") {
       if (planData.pro?.paymentPlanId?._id) {
-        // Use dynamic URL if plan data is available
-        window.open(`/payment/${planData.pro.paymentPlanId._id}`, "_blank");
+        setPlanId(planData.pro.paymentPlanId._id);
+        setIsModalOpen(true);
       } else {
-        // Fall back to original URL
         return;
       }
     } else {
       if (planData.premium?.paymentPlanId?._id) {
-        // Use dynamic URL if plan data is available
-        window.open(`/payment/${planData.premium.paymentPlanId._id}`, "_blank");
+        setPlanId(planData.premium.paymentPlanId._id);
+        setIsModalOpen(true);
       } else {
-        // Fall back to original URL
         return;
       }
     }
@@ -261,6 +266,10 @@ const PricingWithTestimonials = ({
           failure
         </p>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="Example Modal">
+        <PaymentDetails planId={planId} />
+      </Modal>
     </div>
   );
 };
