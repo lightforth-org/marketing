@@ -5,10 +5,10 @@ const Goals = () => {
   return (
     <div className="py-12 space-y-10 text-center">
       <div>
-        <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold  text-gray-900">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold  text-gray-900">
           Real life screenshot.
         </h2>
-        <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold  text-gray-900">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold  text-gray-900">
           32 applications within 20mins
         </h2>
       </div>

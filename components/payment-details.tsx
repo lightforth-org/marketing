@@ -142,21 +142,19 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
 
   return (
     <div className="w-full ">
-      <div className="flex justify-center items-center py-3">
-        <div className="flex-shrink-0">
-          <Link href="/">
-            <div className="h-8 w-auto cursor-pointer">
-              <Image
-                src="/images/logo.svg"
-                alt="Lightforth Logo"
-                width={25}
-                height={20}
-                className="h-8 w-auto hidden lg:block"
-              />
-            </div>
-          </Link>
+      <Link href="/">
+        <div className="h-8 w-auto cursor-pointer mb-1">
+          <Image
+            src="/images/logo.svg"
+            alt="Lightforth Logo"
+            width={25}
+            height={20}
+            className="h-8 w-auto mx-auto hidden lg:block"
+          />
         </div>
-        <div className="">
+      </Link>
+      <div className="mb-6 space-y-2">
+        <div className="flex justify-center gap-x-3">
           <Link href="/">
             <div className="h-8 w-auto cursor-pointer">
               <Image
@@ -168,12 +166,11 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
               />
             </div>
           </Link>
+          <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 text-center">
+            Get Started
+          </h1>
         </div>
-      </div>
-      <div className="mb-6 space-y-2">
-        <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 text-center">
-          Get Started
-        </h1>
+
         <p className="text-center text-sm text-gray-700">
           Enter your details to continue.
         </p>
@@ -243,7 +240,7 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
           />
         </div>
 
-        <div className="w-full mt-5 flex flex-colj md:flex-row items-center md:items-start mx-auto text-center justify-center">
+        <div className="w-full mt-5 flex flex-col md:flex-row items-center md:items-start mx-auto text-center justify-center">
           <p className="text-sm text-gray-500 ">We accept:</p>
           <Image
             src={"/images/gateways.png"}
@@ -255,10 +252,10 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
 
         {/* Information about the $1 verification charge */}
         <div className="bg-blue-50 p-4 rounded-md border border-blue-100">
-          <h3 className="text-sm font-medium text-blue-800">
+          <h3 className="text-xs sm:text-sm font-medium text-blue-800">
             ! Important Information
           </h3>
-          <div className="mt-2 text-sm text-blue-700">
+          <div className="mt-2 text-xs sm:text-sm text-blue-700">
             <p>
               A <strong>$1</strong> verification charge will appear on your
               card, but it will be immediately refunded. This is just to verify

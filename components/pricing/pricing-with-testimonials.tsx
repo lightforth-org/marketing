@@ -109,14 +109,14 @@ const PricingWithTestimonials = ({
         {/* Headline */}
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-semibold text-[#0494FC] mb-1">
+          <h1 className="text-2xl md:text-4xl font-semibold text-[#0494FC] mb-1">
             You&apos;re one click away from interview invites.
           </h1>
-          <h2 className="text-4xl font-semibold text-gray-900 mb-4">
+          <h2 className="text-2xl md:text-4xl font-semibold text-gray-900 mb-4">
             And the trial is on us for free, Cancel anytime
           </h2>
           <div className="flex flex-col items-center space-y-2 mt-6">
-            <div className="!text-sm flex flex-col md:flex-row items-center gap-x-3">
+            <div className="text-xs md:!text-sm flex flex-col md:flex-row items-center gap-x-3">
               <div className="flex items-center">
                 <span className="text-green-500 mr-2">✓</span>
                 <span className="text-gray-500">
@@ -137,14 +137,14 @@ const PricingWithTestimonials = ({
               </div>
             </div>
 
-            <div className="!text-sm flex items-center">
+            <div className="text-xs md:!text-sm flex items-center">
               <span className="text-green-500 mr-2 hidden sm:block">✓</span>
               <span className="text-gray-500">
                 An interview copilot that feeds you the right answers - in your
                 tone - during live calls
               </span>
             </div>
-            <div className="!text-sm flex items-center">
+            <div className="text-xs md:!text-sm flex items-center">
               <span className="text-green-500 mr-2 hidden text-center sm:text-justify sm:block">
                 ✓
               </span>
@@ -216,24 +216,24 @@ const PricingWithTestimonials = ({
       <div className="mt-8 w-full mx-auto md:max-w-xl">
         <button
           onClick={handlePaymentClick}
-          className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-8 rounded-md transition duration-300"
+          className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-4 md:px-8 rounded-md transition duration-300"
         >
           Start getting jobs, cancel anytime
         </button>
         <div className="mt-6 space-y-3 flex flex-col items-center">
-          <div className="!text-sm flex  items-center">
+          <div className="text-xs md:!text-sm flex  items-center">
             <span className="text-green-500 mr-2 hidden sm:block">✓</span>
-            <span className="text-gray-500 text-center sm:">
+            <span className="text-gray-500 text-center ">
               71% of users get at least 2 interviews before trial ends
             </span>
           </div>
-          <div className="!text-sm flex items-center">
+          <div className="text-xs md:!text-sm flex items-center">
             <span className="text-green-500 mr-2 hidden sm:block">✓</span>
             <span className="text-gray-500 text-center sm:text-justify">
               Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more
             </span>
           </div>
-          <div className="!text-sm flex items-center">
+          <div className="text-xs md:!text-sm flex items-center">
             <span className="text-green-500 mr-2 hidden sm:block">✓</span>
             <span className="text-gray-500 text-center sm:text-justify">
               Copilot answers interview questions even if they ask you to share

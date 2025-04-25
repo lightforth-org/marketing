@@ -96,8 +96,8 @@ const PricingPlan = ({
 
       {/* Lightning Bolt and 3 Days Free */}
       <div className="flex items-center border-b border-gray-100 pb-3 mb-3">
-        <span className=" font-bold text-lg sm:text-xl">⚡️ 3days free </span>
-        <span className="ml-1 text-red-500 font-bold text-lg sm:text-xl">
+        <span className=" font-bold text-md sm:text-xl">⚡️ 3days free </span>
+        <span className="ml-1 text-red-500 font-bold text-md sm:text-xl">
           {" "}
           - no payment now
         </span>
@@ -112,7 +112,7 @@ const PricingPlan = ({
     </div>
 
     {/* Footer */}
-    <div className="bg-[#323232] text-[#8A8C8D] px-4 py-2 text-sm shadow ">
+    <div className="bg-[#323232] text-[#8A8C8D] px-4 py-2 text-xs md:text-sm shadow ">
       After 3 days free access, your subscription starts at {newPrice} billed
       every monthly.
       <span className="text-[#B8E1FE] cursor-pointer ml-1">

@@ -63,9 +63,10 @@ export default function Modal({
       >
         <div
           ref={modalRef}
-          className="w-full max-w-xl rounded-lg bg-white p-6 shadow-xl"
+          className="w-full max-w-xl rounded-lg bg-white p-4 sm:p-6 shadow-xl"
+          style={{ minHeight: "200px", maxHeight: "90vh", overflowY: "auto" }}
         >
-          <div className="mb-1 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold"></h3>
             <button
               onClick={onClose}
