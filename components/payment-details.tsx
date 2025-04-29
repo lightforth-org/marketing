@@ -4,6 +4,7 @@ import apiService from "@/services/api";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 interface PaymentProps {
   planId: string;
@@ -23,11 +24,46 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const createLead = async (leadData) => {
+    const response = await axios.post(
+      "https://rest.gohighlevel.com/v1/contacts/",
+      {
+        ...leadData,
+        tags: ["quiz-lead"],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  };
+
+  const updateContactToDroppedOff = async (contactId) => {
+    await axios.put(
+      `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
+      {
+        tags: ["quiz-dropped_off"],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  };
+
   const createLightforthPartnerUser = async () => {
     try {
       const response = await apiService.post(
         `/account/create-lightforth-partner-user`,
-        formData,
+        {
+          ...formData,
+          source: "funnel",
+        },
         {
           headers: {
             "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
@@ -49,13 +85,18 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
     }
   };
 
-  const createUserSub = async (authorizerId: string, planId: string) => {
+  const createUserSub = async (
+    authorizerId: string,
+    planId: string,
+    contactId: string
+  ) => {
     try {
       const response = await apiService.post(
         "/account/create-lightforth-partner-user-subscription",
         {
           planId,
           authorizerId,
+          contactId,
         },
         {
           headers: {
@@ -73,6 +114,8 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
       if (!paymentLink) {
         throw new Error("Payment link not found");
       }
+
+      await updateContactToDroppedOff(contactId);
 
       // Load the payment URL in the current window
       window.location.href = paymentLink;
@@ -94,11 +137,24 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
         throw new Error("Plan ID is missing");
       }
 
+      // Create lead first to get contactId
+      const leadResponse = await createLead(formData);
+      if (!leadResponse?.contact?.id) {
+        throw new Error("Failed to create contact");
+      }
+
+      // Then create the partner user
       const userAuthId = await createLightforthPartnerUser();
-      await createUserSub(userAuthId, planId);
+      if (!userAuthId) {
+        throw new Error("Failed to create partner user");
+      }
+
+      // Finally create the subscription
+      await createUserSub(userAuthId, planId, leadResponse?.contact?.id);
 
       // Success message could be added here
       console.log("User subscription created successfully");
+      // Note: No need to set loading to false since we're redirecting
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"
