@@ -16,6 +16,18 @@ export default function RootLayout({
         />
         <link rel="icon" href="/favicon.ico" />
 
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var head = document.head;
+              var script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = "https://t.lightforth.org/v1/lst/universal-script?ph=b18b330f9b6aca0d4ee43dee583f31d90b7f725528683d35d1beb4819d0cf9c3&tag=!clicked&ref_url=" + encodeURI(document.URL);
+              head.appendChild(script);
+            `,
+          }}
+        ></script>
+
         {/* Google Tag Manager Script */}
         <Script
           id="gtm"
