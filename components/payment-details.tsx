@@ -5,12 +5,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 
 interface PaymentProps {
   planId: string;
 }
 
 const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -18,27 +20,11 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
     lastName: "",
     email: "",
   });
+  const contactId = searchParams.get("contactId") || null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const createLead = async (leadData) => {
-    const response = await axios.post(
-      "https://rest.gohighlevel.com/v1/contacts/",
-      {
-        ...leadData,
-        tags: ["quiz-lead"],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data;
   };
 
   const updateContactToDroppedOff = async (contactId) => {
@@ -85,19 +71,24 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
     }
   };
 
-  const createUserSub = async (
-    authorizerId: string,
-    planId: string,
-    contactId: string
-  ) => {
+  const createUserSub = async (authorizerId: string, planId: string) => {
     try {
+      const payload: {
+        planId: string;
+        authorizerId: string;
+        contactId?: string;
+      } = {
+        planId,
+        authorizerId,
+      };
+
+      if (contactId) {
+        payload.contactId = contactId;
+      }
+
       const response = await apiService.post(
         "/account/create-lightforth-partner-user-subscription",
-        {
-          planId,
-          authorizerId,
-          contactId,
-        },
+        payload,
         {
           headers: {
             "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
@@ -137,12 +128,6 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
         throw new Error("Plan ID is missing");
       }
 
-      // Create lead first to get contactId
-      const leadResponse = await createLead(formData);
-      if (!leadResponse?.contact?.id) {
-        throw new Error("Failed to create contact");
-      }
-
       // Then create the partner user
       const userAuthId = await createLightforthPartnerUser();
       if (!userAuthId) {
@@ -150,7 +135,7 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
       }
 
       // Finally create the subscription
-      await createUserSub(userAuthId, planId, leadResponse?.contact?.id);
+      await createUserSub(userAuthId, planId);
 
       // Success message could be added here
       console.log("User subscription created successfully");
