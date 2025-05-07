@@ -1,13 +1,14 @@
 // @ts-nocheck
 import { trackAction } from "@/lib/ampHelper";
+import apiService from "@/services/api";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { TbLoader2 } from "react-icons/tb";
 import SpecialOffer from "../special-offer";
 import PricingPlan from "./pricing-plan";
 import Testimonial from "./testimonial";
-import apiService from "@/services/api";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import Modal from "../modal";
-import PaymentDetails from "../payment-details";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 interface PlanData {
   _id: string;
@@ -29,16 +30,19 @@ const PricingWithTestimonials = ({
   selectedPlan: string;
   setSelectedPlan: (plan: string) => void;
 }) => {
+  const searchParams = useSearchParams();
   // Add state to store plan data from API
   const [planData, setPlanData] = useState<{
     pro?: PlanData;
     premium?: PlanData;
   }>({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [planId, setPlanId] = useState<string | null>(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const contactId = searchParams.get("contactId") || null;
+  const authorizerId = searchParams.get("authorizerId") || null;
 
   // const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   // Fetch plans on component mount
   useEffect(() => {
@@ -74,32 +78,101 @@ const PricingWithTestimonials = ({
     fetchPlans();
   }, []);
 
-  // Handle CTA button click with dynamic payment URLs
-  const handlePaymentClick = () => {
-    // Track analytics as before
-    trackAction("QValue_Bump", {
-      selectedPlan: selectedPlan,
-      planType: selectedPlan === "Pro" ? "Pro" : "Premium",
-      price: selectedPlan === "Pro" ? 78.99 : 128.99,
-    });
+  const updateContactToDroppedOff = async (contactId) => {
+    await axios.put(
+      `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
+      {
+        tags: ["quiz-dropped_off"],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  };
 
-    // Determine which URL to use
-    if (selectedPlan === "Pro") {
-      if (planData.pro?.paymentPlanId?._id) {
-        setPlanId(planData.pro.paymentPlanId._id);
-        setIsModalOpen(true);
-      } else {
-        return;
+  const createUserSub = async (planId: string) => {
+    try {
+      const payload: {
+        planId: string;
+        authorizerId: string;
+        contactId: string;
+      } = {
+        planId,
+        authorizerId,
+        contactId,
+      };
+
+      const response = await apiService.post(
+        "/account/create-lightforth-partner-user-subscription",
+        payload,
+        {
+          headers: {
+            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+          },
+        }
+      );
+
+      if (response.statusCode !== 200) {
+        throw new Error("Failed to create subscription");
       }
-    } else {
-      if (planData.premium?.paymentPlanId?._id) {
-        setPlanId(planData.premium.paymentPlanId._id);
-        setIsModalOpen(true);
-      } else {
-        return;
+
+      const paymentLink = response.response?.paymentLink?.data;
+
+      if (!paymentLink) {
+        throw new Error("Payment link not found");
       }
+
+      await updateContactToDroppedOff(contactId);
+
+      // Load the payment URL in the current window
+      window.location.href = paymentLink;
+
+      return true;
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      throw error;
     }
   };
+
+  // Handle CTA button click with dynamic payment URLs
+  const handlePaymentClick = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Track analytics as before
+      trackAction("QValue_Bump", {
+        selectedPlan: selectedPlan,
+        planType: selectedPlan === "Pro" ? "Pro" : "Premium",
+        price: selectedPlan === "Pro" ? 78.99 : 128.99,
+      });
+
+      // Determine which URL to use
+      if (selectedPlan === "Pro") {
+        if (planData.pro?.paymentPlanId?._id) {
+          await createUserSub(planData.pro.paymentPlanId._id);
+        } else {
+          return;
+        }
+      } else {
+        if (planData.premium?.paymentPlanId?._id) {
+          await createUserSub(planData.pro.paymentPlanId._id);
+        } else {
+          return;
+        }
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+      console.error("Submission error:", err);
+      setIsLoading(false);
+    }
+  };
+
+  console.log({ error });
 
   return (
     <div className="bg-white py-12 md:py-16">
@@ -216,9 +289,13 @@ const PricingWithTestimonials = ({
       <div className="mt-8 w-full mx-auto md:max-w-xl">
         <button
           onClick={handlePaymentClick}
-          className="w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-4 md:px-8 rounded-md transition duration-300"
+          className="text-center w-full bg-[#0494FC] hover:bg-[#0494fc]/90 cursor-pointer text-white font-bold py-3 px-4 md:px-8 rounded-md transition duration-300"
         >
-          Start getting jobs, cancel anytime
+          {isLoading ? (
+            <TbLoader2 className="animate-spin text-white text-3xl mx-auto" />
+          ) : (
+            "Start getting jobs, cancel anytime"
+          )}
         </button>
         <div className="mt-6 space-y-3 flex flex-col items-center">
           <div className="text-xs md:!text-sm flex  items-center">
@@ -267,9 +344,9 @@ const PricingWithTestimonials = ({
         </p>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={closeModal} title="Example Modal">
+      {/* <Modal isOpen={isModalOpen} onClose={closeModal} title="Example Modal">
         <PaymentDetails planId={planId} />
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

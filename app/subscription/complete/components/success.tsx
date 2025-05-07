@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Success = () => {
   return (
-    <div className="w-full  space-y-3 max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-xs text-center">
+    <div className="w-full space-y-3 max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-xs text-center">
       <Image
         src={"/images/check-success.svg"}
         alt="success-checkmark-green"

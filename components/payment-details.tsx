@@ -21,6 +21,7 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
     email: "",
   });
   const contactId = searchParams.get("contactId") || null;
+  const authorizerId = searchParams.get("authorizerId") || null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,49 +43,17 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
     );
   };
 
-  const createLightforthPartnerUser = async () => {
-    try {
-      const response = await apiService.post(
-        `/account/create-lightforth-partner-user`,
-        {
-          ...formData,
-          source: "funnel",
-        },
-        {
-          headers: {
-            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
-          },
-        },
-        10000
-      );
-
-      if (!response?.response?.newPartnerUser?.authorizerId) {
-        throw new Error(
-          response?.response?.authorizer?.message || "This user already exists"
-        );
-      }
-
-      return response?.response.newPartnerUser.authorizerId;
-    } catch (error) {
-      console.error("Error creating partner user:", error);
-      throw error;
-    }
-  };
-
-  const createUserSub = async (authorizerId: string, planId: string) => {
+  const createUserSub = async (planId: string) => {
     try {
       const payload: {
         planId: string;
         authorizerId: string;
-        contactId?: string;
+        contactId: string;
       } = {
         planId,
         authorizerId,
+        contactId,
       };
-
-      if (contactId) {
-        payload.contactId = contactId;
-      }
 
       const response = await apiService.post(
         "/account/create-lightforth-partner-user-subscription",
@@ -106,9 +75,7 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
         throw new Error("Payment link not found");
       }
 
-      if (contactId) {
-        await updateContactToDroppedOff(contactId);
-      }
+      await updateContactToDroppedOff(contactId);
 
       // Load the payment URL in the current window
       window.location.href = paymentLink;
@@ -137,7 +104,7 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
       }
 
       // Finally create the subscription
-      await createUserSub(userAuthId, planId);
+      await createUserSub(planId);
 
       // Success message could be added here
       console.log("User subscription created successfully");

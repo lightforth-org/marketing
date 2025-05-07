@@ -10,16 +10,33 @@ import TestimonialCarousel from "@/components/testimonials";
 import { useRef, useState, useEffect } from "react";
 import * as amplitude from "@amplitude/analytics-browser";
 import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
+import { useSearchParams } from "next/navigation";
+import { TbLoader2 } from "react-icons/tb";
 
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
   const [selectedPlan, setSelectedPlan] = useState<string>("Pro");
+  const params = useSearchParams();
 
-  const scrollToSection = () => {
-    if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const authorizerId = params.get("authorizerId");
+    const contactId = params.get("contactId");
+    const funnel = params.get("funnel");
+
+    if (
+      funnel !== "quiz" ||
+      [authorizerId, contactId].includes(null) ||
+      [authorizerId, contactId].includes("undefined")
+    ) {
+      setTimeout(() => {
+        window.location.href = "https://quiz.lightforth.org";
+      }, 2000); // Simulate a delay for loading
+    } else {
+      setIsLoading(false);
     }
-  };
+  }, [params]);
 
   useEffect(() => {
     const sessionReplayTracking = sessionReplayPlugin();
@@ -44,6 +61,22 @@ export default function Home() {
       console.log("Amplitude Device ID:", amplitude.getDeviceId());
     }
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <TbLoader2 className="animate-spin text-blue-400 text-3xl" />
+        </div>
+      </div>
+    );
+  }
+
+  const scrollToSection = () => {
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <div className="snap-y snap-mandatory">
