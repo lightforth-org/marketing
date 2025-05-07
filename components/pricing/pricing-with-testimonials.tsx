@@ -32,15 +32,15 @@ const PricingWithTestimonials = ({
 }) => {
   const searchParams = useSearchParams();
   // Add state to store plan data from API
-  const [planData, setPlanData] = useState<{
-    pro?: PlanData;
-    premium?: PlanData;
-  }>({});
+  // const [planData, setPlanData] = useState<{
+  //   pro?: PlanData;
+  //   premium?: PlanData;
+  // }>({});
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const contactId = searchParams.get("contactId") || null;
-  const authorizerId = searchParams.get("authorizerId") || null;
+  // const authorizerId = searchParams.get("authorizerId") || null;
 
   // const openModal = () => setIsModalOpen(true);
 
@@ -79,18 +79,25 @@ const PricingWithTestimonials = ({
   }, []);
 
   const updateContactToDroppedOff = async (contactId) => {
-    await axios.put(
-      `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
-      {
-        tags: ["quiz-dropped_off"],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
-          "Content-Type": "application/json",
+    setIsLoading(true);
+    try {
+      await axios.put(
+        `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
+        {
+          tags: ["quiz-dropped_off"],
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (err) {
+      console.log("Failed to update contact:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // const createUserSub = async (planId: string) => {
@@ -151,11 +158,13 @@ const PricingWithTestimonials = ({
 
       // Determine which URL to use
       if (selectedPlan === "Pro") {
+        await updateContactToDroppedOff(contactId);
         window.open(
           "https://careersuccess.lightforth.org/checkout-order-3827",
           "_blank"
         );
       } else if (selectedPlan === "Premium") {
+        await updateContactToDroppedOff(contactId);
         window.open(
           "https://careersuccess.lightforth.org/checkout-order-3827-9663",
           "_blank"
