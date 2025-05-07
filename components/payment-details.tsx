@@ -106,7 +106,9 @@ const PaymentDetails: React.FC<PaymentProps> = ({ planId }) => {
         throw new Error("Payment link not found");
       }
 
-      await updateContactToDroppedOff(contactId);
+      if (contactId) {
+        await updateContactToDroppedOff(contactId);
+      }
 
       // Load the payment URL in the current window
       window.location.href = paymentLink;
