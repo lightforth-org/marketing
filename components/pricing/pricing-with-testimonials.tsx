@@ -93,49 +93,49 @@ const PricingWithTestimonials = ({
     );
   };
 
-  const createUserSub = async (planId: string) => {
-    try {
-      const payload: {
-        planId: string;
-        authorizerId: string;
-        contactId: string;
-      } = {
-        planId,
-        authorizerId,
-        contactId,
-      };
+  // const createUserSub = async (planId: string) => {
+  //   try {
+  //     const payload: {
+  //       planId: string;
+  //       authorizerId: string;
+  //       contactId: string;
+  //     } = {
+  //       planId,
+  //       authorizerId,
+  //       contactId,
+  //     };
 
-      const response = await apiService.post(
-        "/account/create-lightforth-partner-user-subscription",
-        payload,
-        {
-          headers: {
-            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
-          },
-        }
-      );
+  //     const response = await apiService.post(
+  //       "/account/create-lightforth-partner-user-subscription",
+  //       payload,
+  //       {
+  //         headers: {
+  //           "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+  //         },
+  //       }
+  //     );
 
-      if (response.statusCode !== 200) {
-        throw new Error("Failed to create subscription");
-      }
+  //     if (response.statusCode !== 200) {
+  //       throw new Error("Failed to create subscription");
+  //     }
 
-      const paymentLink = response.response?.paymentLink?.data;
+  //     const paymentLink = response.response?.paymentLink?.data;
 
-      if (!paymentLink) {
-        throw new Error("Payment link not found");
-      }
+  //     if (!paymentLink) {
+  //       throw new Error("Payment link not found");
+  //     }
 
-      await updateContactToDroppedOff(contactId);
+  //     await updateContactToDroppedOff(contactId);
 
-      // Load the payment URL in the current window
-      window.location.href = paymentLink;
+  //     // Load the payment URL in the current window
+  //     window.location.href = paymentLink;
 
-      return true;
-    } catch (error) {
-      console.error("Error creating subscription:", error);
-      throw error;
-    }
-  };
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Error creating subscription:", error);
+  //     throw error;
+  //   }
+  // };
 
   // Handle CTA button click with dynamic payment URLs
   const handlePaymentClick = async () => {
@@ -151,17 +151,15 @@ const PricingWithTestimonials = ({
 
       // Determine which URL to use
       if (selectedPlan === "Pro") {
-        if (planData.pro?.paymentPlanId?._id) {
-          await createUserSub(planData.pro.paymentPlanId._id);
-        } else {
-          return;
-        }
-      } else {
-        if (planData.premium?.paymentPlanId?._id) {
-          await createUserSub(planData.pro.paymentPlanId._id);
-        } else {
-          return;
-        }
+        window.open(
+          "https://careersuccess.lightforth.org/checkout-order-3827",
+          "_blank"
+        );
+      } else if (selectedPlan === "Premium") {
+        window.open(
+          "https://careersuccess.lightforth.org/checkout-order-3827-9663",
+          "_blank"
+        );
       }
     } catch (err) {
       setError(
