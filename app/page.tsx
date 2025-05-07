@@ -7,20 +7,19 @@ import Navbar from "@/components/navbar";
 import PricingWithTestimonials from "@/components/pricing/pricing-with-testimonials";
 import RatingsSection from "@/components/ratings";
 import TestimonialCarousel from "@/components/testimonials";
-import { useRef, useState, useEffect } from "react";
 import * as amplitude from "@amplitude/analytics-browser";
 import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
 
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
   const [selectedPlan, setSelectedPlan] = useState<string>("Pro");
-  const params = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
     const authorizerId = params.get("authorizerId");
     const contactId = params.get("contactId");
     const funnel = params.get("funnel");
@@ -36,7 +35,7 @@ export default function Home() {
     } else {
       setIsLoading(false);
     }
-  }, [params]);
+  }, []);
 
   useEffect(() => {
     const sessionReplayTracking = sessionReplayPlugin();
