@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
+import { Suspense } from 'react';
 import FAQSection from '@/components/faqSection';
 // import FeatureSection from '@/components/features';
 // import Footer from '@/components/footer';
@@ -89,15 +90,22 @@ export default function Home() {
       <main className="px-3 md:px-0">
         <HeroSection onClickScroll={scrollToSection} />
         <VideoCarousel />
-        <NewFeaturesSection onClickScroll={scrollToSection} />
         <section ref={sectionRef}>
-          <PricingWithTestimonials
-            heading="Your Personalized Career Plan"
-            subHeading="that makes you the candidate recruiters chase."
-            tagColor="#1149A6"
-            selectedPlan={selectedPlan}
-            setSelectedPlan={setSelectedPlan}
-          />
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center p-8">
+                <TbLoader2 className="animate-spin text-blue-400 text-3xl" />
+              </div>
+            }
+          >
+            <PricingWithTestimonials
+              heading="Your Personalized Career Plan"
+              subHeading="that makes you the candidate recruiters chase."
+              tagColor="#1149A6"
+              selectedPlan={selectedPlan}
+              setSelectedPlan={setSelectedPlan}
+            />
+          </Suspense>
         </section>
 
         {/* <FeatureSection /> */}
@@ -107,13 +115,23 @@ export default function Home() {
         <ResultsGallerySection />
         {/* <Goals /> */}
 
-        <PricingWithTestimonials
-          heading="Get 5+ job offers in 21 days."
-          subHeading="Cancel when you feel like it."
-          tagColor="#1149A6"
-          selectedPlan={selectedPlan}
-          setSelectedPlan={setSelectedPlan}
-        />
+        <section ref={sectionRef}>
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center p-8">
+                <TbLoader2 className="animate-spin text-blue-400 text-3xl" />
+              </div>
+            }
+          >
+            <PricingWithTestimonials
+              heading="Your Personalized Career Plan"
+              subHeading="that makes you the candidate recruiters chase."
+              tagColor="#1149A6"
+              selectedPlan={selectedPlan}
+              setSelectedPlan={setSelectedPlan}
+            />
+          </Suspense>
+        </section>
         <FAQSection />
       </main>
       {/* <Footer /> */}
