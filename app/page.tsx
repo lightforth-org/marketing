@@ -25,25 +25,6 @@ export default function Home() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const params = new URLSearchParams(window.location.search);
-  //   const authorizerId = params.get('authorizerId');
-  //   const contactId = params.get('contactId');
-  //   const funnel = params.get('funnel');
-
-  //   if (
-  //     funnel !== 'quiz' ||
-  //     [authorizerId, contactId].includes(null) ||
-  //     [authorizerId, contactId].includes('undefined')
-  //   ) {
-  //     setTimeout(() => {
-  //       window.location.href = 'https://quiz.lightforth.org';
-  //     }, 2000); // Simulate a delay for loading
-  //   } else {
-  //     setIsLoading(false);
-  //   }
-  // }, []);
-
   useEffect(() => {
     const sessionReplayTracking = sessionReplayPlugin();
     amplitude.add(sessionReplayTracking);

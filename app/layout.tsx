@@ -16,7 +16,9 @@ export default function RootLayout({
         />
         <link rel="icon" href="/favicon.ico" />
 
-        <script
+        <Script
+          id="lightforth-universal-inline"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               var head = document.head;
@@ -26,7 +28,7 @@ export default function RootLayout({
               head.appendChild(script);
             `,
           }}
-        ></script>
+        />
 
         {/* Google Tag Manager Script */}
         <Script

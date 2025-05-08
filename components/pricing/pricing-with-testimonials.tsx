@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // // @ts-nocheck
+"use client";
 // import { trackAction } from "@/lib/ampHelper";
 // import apiService from "@/services/api";
 // import Image from "next/image";
@@ -362,15 +363,15 @@
 // export default PricingWithTestimonials;
 
 // @ts-nocheck
-import { Suspense } from 'react';
-import { trackAction } from '@/lib/ampHelper';
-import apiService from '@/services/api';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { TbLoader2 } from 'react-icons/tb';
-import SpecialOffer from '../special-offer';
-import { useSearchParams } from 'next/navigation';
-import axios from 'axios';
+import { Suspense } from "react";
+import { trackAction } from "@/lib/ampHelper";
+import apiService from "@/services/api";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { TbLoader2 } from "react-icons/tb";
+import SpecialOffer from "../special-offer";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 interface PlanData {
   _id: string;
@@ -389,7 +390,7 @@ const PricingCard = ({
   features,
   onStartTrial,
 }: {
-  color: 'purple' | 'blue';
+  color: "purple" | "blue";
   price: string;
   features: string[];
   onStartTrial: () => void;
@@ -427,7 +428,7 @@ const PricingCard = ({
         {/* Price Section with CTA*/}
         <div
           className={`${
-            color === 'purple' ? 'bg-[#8c1d49]' : 'bg-[#1055db]'
+            color === "purple" ? "bg-[#8c1d49]" : "bg-[#1055db]"
           } text-white p-8 text-center md:w-1/2 flex flex-col justify-center m-4 rounded-lg`}
         >
           <div className="flex justify-center items-center mb-4 space-x-2">
@@ -471,14 +472,14 @@ const PricingWithTestimonials = ({
 }) => {
   const searchParams = useSearchParams();
   // Add state to store plan data from API
-  // const [planData, setPlanData] = useState<{
-  //   pro?: PlanData;
-  //   premium?: PlanData;
-  // }>({});
+  const [planData, setPlanData] = useState<{
+    pro?: PlanData;
+    premium?: PlanData;
+  }>({});
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const contactId = searchParams.get('contactId') || null;
+  const contactId = searchParams.get("contactId") || null;
   // const authorizerId = searchParams.get("authorizerId") || null;
 
   // const openModal = () => setIsModalOpen(true);
@@ -488,28 +489,24 @@ const PricingWithTestimonials = ({
     const fetchPlans = async () => {
       try {
         const response = await apiService.get<{ data: PlanData[] }>(
-          '/account/get-all-plans-for-partner',
+          "/account/get-all-plans-for-partner",
           {},
           {
             headers: {
-              'x-signature': process.env.NEXT_PUBLIC_X_SIGNATURE || '',
+              "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
             },
           }
         );
 
-        if (
-          response &&
-          response?.response?.data &&
-          Array.isArray(response?.response?.data)
-        ) {
+        if (response && response?.data && Array.isArray(response?.data)) {
           // We only need the pro (index 0) and premium (index 2) plans
           setPlanData({
-            pro: response?.response?.data[2],
-            premium: response?.response?.data[0],
+            pro: response?.data[2],
+            premium: response?.data[0],
           });
         }
       } catch (err) {
-        console.error('Failed to fetch pricing plans:', err);
+        console.error("Failed to fetch pricing plans:", err);
         // Silently fail and use fallback URLs if API fails
       }
     };
@@ -517,23 +514,23 @@ const PricingWithTestimonials = ({
     fetchPlans();
   }, []);
 
-  const updateContactToDroppedOff = async (contactId) => {
+  const updateContactToDroppedOff = async (contactId: string | null) => {
     setIsLoading(true);
     try {
       await axios.put(
         `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
         {
-          tags: ['quiz-dropped_off'],
+          tags: ["quiz-dropped_off"],
         },
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
     } catch (err) {
-      console.log('Failed to update contact:', err);
+      console.log("Failed to update contact:", err);
     } finally {
       setIsLoading(false);
     }
@@ -589,31 +586,31 @@ const PricingWithTestimonials = ({
     setError(null);
     try {
       // Track analytics as before
-      trackAction('QValue_Bump', {
+      trackAction("QValue_Bump", {
         selectedPlan: plan,
-        planType: plan === 'Pro' ? 'Pro' : 'Premium',
-        price: plan === 'Pro' ? 78.99 : 128.99,
+        planType: plan === "Pro" ? "Pro" : "Premium",
+        price: plan === "Pro" ? 78.99 : 128.99,
       });
 
       // Determine which URL to use
-      if (plan === 'Pro') {
+      if (plan === "Pro") {
         await updateContactToDroppedOff(contactId);
         window.open(
-          'https://careersuccess.lightforth.org/checkout-order-3827',
-          '_blank'
+          "https://careersuccess.lightforth.org/checkout-order-3827",
+          "_blank"
         );
-      } else if (plan === 'Premium') {
+      } else if (plan === "Premium") {
         await updateContactToDroppedOff(contactId);
         window.open(
-          'https://careersuccess.lightforth.org/checkout-order-3827-9663',
-          '_blank'
+          "https://careersuccess.lightforth.org/checkout-order-3827-9663",
+          "_blank"
         );
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'An unknown error occurred'
+        err instanceof Error ? err.message : "An unknown error occurred"
       );
-      console.error('Submission error:', err);
+      console.error("Submission error:", err);
       setIsLoading(false);
     }
   };
@@ -645,14 +642,14 @@ const PricingWithTestimonials = ({
                 color="purple"
                 price="79"
                 features={[
-                  'A+ ATS Resume Builder',
-                  '3 AI Cover Letter Generator',
-                  '50 Auto-apply Jobs',
-                  '50 Recommeded jobs',
-                  '3 Interview Prep sessions',
-                  '3 Interview Co-Pilot sessions',
+                  "A+ ATS Resume Builder",
+                  "3 AI Cover Letter Generator",
+                  "50 Auto-apply Jobs",
+                  "50 Recommeded jobs",
+                  "3 Interview Prep sessions",
+                  "3 Interview Co-Pilot sessions",
                 ]}
-                onStartTrial={() => handlePaymentClick('Pro')}
+                onStartTrial={() => handlePaymentClick("Pro")}
               />
             </div>
 
@@ -662,14 +659,14 @@ const PricingWithTestimonials = ({
                 color="blue"
                 price="129"
                 features={[
-                  'A+ ATS Resume Builder',
-                  '5 AI Cover Letter Generator',
-                  '150 Auto-apply Jobs',
-                  '150 Recommeded jobs',
-                  '5 Interview Prep sessions',
-                  '5 Interview Co-Pilot sessions',
+                  "A+ ATS Resume Builder",
+                  "5 AI Cover Letter Generator",
+                  "150 Auto-apply Jobs",
+                  "150 Recommeded jobs",
+                  "5 Interview Prep sessions",
+                  "5 Interview Co-Pilot sessions",
                 ]}
-                onStartTrial={() => handlePaymentClick('Premium')}
+                onStartTrial={() => handlePaymentClick("Premium")}
               />
             </div>
           </div>
