@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import CountdownTimer from './timer';
+// import CountdownTimer from './timer';
 
 const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
   return (
