@@ -363,11 +363,15 @@
 // export default PricingWithTestimonials;
 
 // @ts-nocheck
+import { Suspense } from "react";
 import { trackAction } from "@/lib/ampHelper";
 import apiService from "@/services/api";
-import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { TbLoader2 } from "react-icons/tb";
+import SpecialOffer from "../special-offer";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 interface PlanData {
   _id: string;
@@ -466,7 +470,7 @@ const PricingWithTestimonials = ({
   selectedPlan: string;
   setSelectedPlan: (plan: string) => void;
 }) => {
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = useSearchParams();
   // Add state to store plan data from API
   const [planData, setPlanData] = useState<{
     pro?: PlanData;
@@ -614,149 +618,153 @@ const PricingWithTestimonials = ({
   console.log({ error });
 
   return (
-    <div className="bg-white py-12 md:py-16">
-      {/* Holiday Offer Banner */}
-      {/* <SpecialOffer /> */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            TRANSFORM YOUR CAREER
-            <br />
-            JOURNEY WITH LIGHTFORTH
-          </h2>
-        </div>
-
-        {/* New Pricing Cards */}
-        <div className=" gap-y-12 md:gap-x-8 max-w-5xl mx-auto mb-12">
-          {/* Pro Plan */}
-          <div className="w-full md:w-full my-8">
-            <PricingCard
-              color="purple"
-              price="79"
-              features={[
-                "A+ ATS Resume Builder",
-                "3 AI Cover Letter Generator",
-                "50 Auto-apply Jobs",
-                "50 Recommeded jobs",
-                "3 Interview Prep sessions",
-                "3 Interview Co-Pilot sessions",
-              ]}
-              onStartTrial={() => handlePaymentClick("Pro")}
-            />
+    <Suspense
+      fallback={<TbLoader2 className="animate-spin text-blue-400 text-3xl" />}
+    >
+      <div className="bg-white py-12 md:py-16">
+        {/* Holiday Offer Banner */}
+        {/* <SpecialOffer /> */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main Heading */}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              TRANSFORM YOUR CAREER
+              <br />
+              JOURNEY WITH LIGHTFORTH
+            </h2>
           </div>
 
-          {/* Premium Plan */}
-          <div className="w-full md:w-full">
-            <PricingCard
-              color="blue"
-              price="129"
-              features={[
-                "A+ ATS Resume Builder",
-                "5 AI Cover Letter Generator",
-                "150 Auto-apply Jobs",
-                "150 Recommeded jobs",
-                "5 Interview Prep sessions",
-                "5 Interview Co-Pilot sessions",
-              ]}
-              onStartTrial={() => handlePaymentClick("Premium")}
-            />
-          </div>
-        </div>
+          {/* New Pricing Cards */}
+          <div className=" gap-y-12 md:gap-x-8 max-w-5xl mx-auto mb-12">
+            {/* Pro Plan */}
+            <div className="w-full md:w-full my-8">
+              <PricingCard
+                color="purple"
+                price="79"
+                features={[
+                  "A+ ATS Resume Builder",
+                  "3 AI Cover Letter Generator",
+                  "50 Auto-apply Jobs",
+                  "50 Recommeded jobs",
+                  "3 Interview Prep sessions",
+                  "3 Interview Co-Pilot sessions",
+                ]}
+                onStartTrial={() => handlePaymentClick("Pro")}
+              />
+            </div>
 
-        {/* Bottom Feature Bullets */}
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col gap-5 items-center mb-12 mt-8">
-            <div className="flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              <p className="text-gray-700">
-                71% of users get at least 2 interviews before trial ends
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              <p className="text-gray-700">
-                Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              <p className="text-gray-700">
-                Copilot answers interview questions even if they ask you to
-                share your screen
-              </p>
+            {/* Premium Plan */}
+            <div className="w-full md:w-full">
+              <PricingCard
+                color="blue"
+                price="129"
+                features={[
+                  "A+ ATS Resume Builder",
+                  "5 AI Cover Letter Generator",
+                  "150 Auto-apply Jobs",
+                  "150 Recommeded jobs",
+                  "5 Interview Prep sessions",
+                  "5 Interview Co-Pilot sessions",
+                ]}
+                onStartTrial={() => handlePaymentClick("Premium")}
+              />
             </div>
           </div>
 
-          {/* Payment Methods */}
-          <div className="text-center mb-10 mt-12">
-            <div className="flex justify-center items-center gap-2">
-              <p className="text-sm text-gray-600">We accept:</p>
-              <div className="flex justify-center">
-                <Image
-                  src="/images/gateways.png"
-                  alt="Payment gateways"
-                  width={300}
-                  height={40}
-                />
+          {/* Bottom Feature Bullets */}
+          <div className="max-w-4xl mx-auto">
+            <div className="flex flex-col gap-5 items-center mb-12 mt-8">
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-5 h-5 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+                <p className="text-gray-700">
+                  71% of users get at least 2 interviews before trial ends
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-5 h-5 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+                <p className="text-gray-700">
+                  Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-5 h-5 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+                <p className="text-gray-700">
+                  Copilot answers interview questions even if they ask you to
+                  share your screen
+                </p>
               </div>
             </div>
-          </div>
 
-          {/* Fine Print */}
-          <div className="max-w-3xl mx-auto text-xs text-gray-400 text-center">
-            <p>
-              {`By continuing, you agree that if you don't cancel at least 6 days prior to the end of the one-week introductory offer, you will automatically be charged the full price of 79.99 USD every month until you cancel in Settings. Learn more about our cancellation and refund policy in the Subscription Terms.`}
-            </p>
-            <p className="mt-6 mb-8">
-              By continuing, I agree that my credit/debit card data will be
-              stored and used for repeated purchase attempts in the event of
-              payment failure.
-            </p>
+            {/* Payment Methods */}
+            <div className="text-center mb-10 mt-12">
+              <div className="flex justify-center items-center gap-2">
+                <p className="text-sm text-gray-600">We accept:</p>
+                <div className="flex justify-center">
+                  <Image
+                    src="/images/gateways.png"
+                    alt="Payment gateways"
+                    width={300}
+                    height={40}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Fine Print */}
+            <div className="max-w-3xl mx-auto text-xs text-gray-400 text-center">
+              <p>
+                {`By continuing, you agree that if you don't cancel at least 6 days prior to the end of the one-week introductory offer, you will automatically be charged the full price of 79.99 USD every month until you cancel in Settings. Learn more about our cancellation and refund policy in the Subscription Terms.`}
+              </p>
+              <p className="mt-6 mb-8">
+                By continuing, I agree that my credit/debit card data will be
+                stored and used for repeated purchase attempts in the event of
+                payment failure.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* <Modal isOpen={isModalOpen} onClose={closeModal} title="Example Modal">
+        {/* <Modal isOpen={isModalOpen} onClose={closeModal} title="Example Modal">
         <PaymentDetails planId={planId} />
       </Modal> */}
-    </div>
+      </div>
+    </Suspense>
   );
 };
 
