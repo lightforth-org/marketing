@@ -1,7 +1,7 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import CountdownTimer from "./timer";
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import CountdownTimer from './timer';
 
 const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
   return (
@@ -38,19 +38,19 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
               </div>
             </div>
 
-            <div className="inline-flex flex-col items-start lg:flex-row lg:items-center gap-x-1">
+            {/* <div className="inline-flex flex-col items-start lg:flex-row lg:items-center gap-x-1">
               <div className="text-[10px] lg:text-sm font-semibold text-black tracking-wide">
                 DISCOUNT IS RESERVED FOR
               </div>
               <div className="text-[#0494FC] text-xl lg:text-lg font-bold">
                 <CountdownTimer durationInMinutes={7} />
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex justify-end items-center">
             <button
-              className="relative text-nowrap bg-[#0494FC] hover:bg-[#0494FC]/90 text-white font-semibold text-sm py-3 px-2 lg:px-5 cursor-pointer rounded-md transition duration-300 overflow-hidden"
+              className="relative text-nowrap bg-[#0494FC] hover:bg-[#0494FC]/90 text-white font-semibold text-sm py-3 px-2 lg:px-8 cursor-pointer rounded-[100px] transition duration-300 overflow-hidden"
               onClick={onClickScroll}
             >
               <span className="relative z-10">Start Getting Jobs</span>
@@ -61,7 +61,7 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
                   <span
                     className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-transparent to-white opacity-30 transform rotate-0 animate-[radar_2s_linear_infinite]"
                     style={{
-                      transformOrigin: "bottom right",
+                      transformOrigin: 'bottom right',
                     }}
                   ></span>
                 </span>
