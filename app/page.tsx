@@ -1,47 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client';
-import FAQSection from '@/components/faqSection';
+"use client";
+import FAQSection from "@/components/faqSection";
 // import FeatureSection from '@/components/features';
 // import Footer from '@/components/footer';
 // import Goals from '@/components/goals';
-import HeroSection from '@/components/hero';
-import Navbar from '@/components/navbar';
-import NewFeaturesSection from '@/components/newFeatures';
-import PricingWithTestimonials from '@/components/pricing/pricing-with-testimonials';
-import GuaranteeSection from '@/components/pricing/testimonialCard';
+import HeroSection from "@/components/hero";
+import Navbar from "@/components/navbar";
+import NewFeaturesSection from "@/components/newFeatures";
+import PricingWithTestimonials from "@/components/pricing/pricing-with-testimonials";
+import GuaranteeSection from "@/components/pricing/testimonialCard";
 // import RatingsSection from '@/components/ratings';
-import ResultsGallerySection from '@/components/resultPage';
+import ResultsGallerySection from "@/components/resultPage";
 // import TestimonialCarousel from '@/components/testimonials';
-import VideoCarousel from '@/components/videoCarousel';
-import * as amplitude from '@amplitude/analytics-browser';
-import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser';
-import { useEffect, useRef, useState } from 'react';
-import { TbLoader2 } from 'react-icons/tb';
+import VideoCarousel from "@/components/videoCarousel";
+import * as amplitude from "@amplitude/analytics-browser";
+import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
+import { useEffect, useRef, useState } from "react";
+import { TbLoader2 } from "react-icons/tb";
 
 export default function Home() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [selectedPlan, setSelectedPlan] = useState<string>('Pro');
+  const [selectedPlan, setSelectedPlan] = useState<string>("Pro");
 
   const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-  //   const params = new URLSearchParams(window.location.search);
-  //   const authorizerId = params.get('authorizerId');
-  //   const contactId = params.get('contactId');
-  //   const funnel = params.get('funnel');
-
-  //   if (
-  //     funnel !== 'quiz' ||
-  //     [authorizerId, contactId].includes(null) ||
-  //     [authorizerId, contactId].includes('undefined')
-  //   ) {
-  //     setTimeout(() => {
-  //       window.location.href = 'https://quiz.lightforth.org';
-  //     }, 2000); // Simulate a delay for loading
-  //   } else {
-  //     setIsLoading(false);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const sessionReplayTracking = sessionReplayPlugin();
@@ -61,9 +42,9 @@ export default function Home() {
       },
     };
 
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV !== "development") {
       amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE as string, options);
-      console.log('Amplitude Device ID:', amplitude.getDeviceId());
+      console.log("Amplitude Device ID:", amplitude.getDeviceId());
     }
   }, []);
 
@@ -79,7 +60,7 @@ export default function Home() {
 
   const scrollToSection = () => {
     if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
