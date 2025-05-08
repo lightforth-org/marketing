@@ -468,7 +468,7 @@ const PricingWithTestimonials = ({
   selectedPlan: string;
   setSelectedPlan: (plan: string) => void;
 }) => {
-  const searchParams = useSearchParams();
+  const searchParam = new URLSearchParams(window.location.search);
   // Add state to store plan data from API
   // const [planData, setPlanData] = useState<{
   //   pro?: PlanData;
