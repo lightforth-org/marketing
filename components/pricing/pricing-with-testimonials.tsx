@@ -622,7 +622,7 @@ const PricingWithTestimonials = ({
   return (
     <div className="bg-white py-12 md:py-16">
       {/* Holiday Offer Banner */}
-      <SpecialOffer />
+      {/* <SpecialOffer /> */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Heading */}
         <div className="text-center mb-16">

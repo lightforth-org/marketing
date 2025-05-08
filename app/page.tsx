@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
-import FeatureSection from '@/components/features';
-import Footer from '@/components/footer';
-import Goals from '@/components/goals';
+import FAQSection from '@/components/faqSection';
+// import FeatureSection from '@/components/features';
+// import Footer from '@/components/footer';
+// import Goals from '@/components/goals';
 import HeroSection from '@/components/hero';
 import Navbar from '@/components/navbar';
 import NewFeaturesSection from '@/components/newFeatures';
 import PricingWithTestimonials from '@/components/pricing/pricing-with-testimonials';
 import GuaranteeSection from '@/components/pricing/testimonialCard';
-import RatingsSection from '@/components/ratings';
-import TestimonialCarousel from '@/components/testimonials';
+// import RatingsSection from '@/components/ratings';
+import ResultsGallerySection from '@/components/resultPage';
+// import TestimonialCarousel from '@/components/testimonials';
 import VideoCarousel from '@/components/videoCarousel';
 import * as amplitude from '@amplitude/analytics-browser';
 import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser';
@@ -101,8 +103,9 @@ export default function Home() {
         {/* <FeatureSection /> */}
         <GuaranteeSection />
         {/* <RatingsSection /> */}
-        <TestimonialCarousel />
-        <Goals />
+        {/* <TestimonialCarousel /> */}
+        <ResultsGallerySection />
+        {/* <Goals /> */}
 
         <PricingWithTestimonials
           heading="Get 5+ job offers in 21 days."
@@ -111,8 +114,9 @@ export default function Home() {
           selectedPlan={selectedPlan}
           setSelectedPlan={setSelectedPlan}
         />
+        <FAQSection />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
