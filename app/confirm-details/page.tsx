@@ -1,13 +1,16 @@
 // import { Suspense } from 'react';
-import VerificationPage from './verifyPage';
+import { Suspense } from "react";
+import VerificationPage from "./verifyPage";
 // import Navbar from '@/components/navbar';
 
 const ConfirmPage = () => {
   return (
-    <div className="">
-      {/* <Navbar onClickScroll={() => console.log('')} /> */}
-      <VerificationPage />
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="">
+        {/* <Navbar onClickScroll={() => console.log('')} /> */}
+        <VerificationPage />
+      </div>
+    </Suspense>
   );
 };
 

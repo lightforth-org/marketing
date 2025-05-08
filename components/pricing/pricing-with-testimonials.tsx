@@ -363,15 +363,13 @@
 // export default PricingWithTestimonials;
 
 // @ts-nocheck
-import { Suspense } from "react";
 import { trackAction } from "@/lib/ampHelper";
 import apiService from "@/services/api";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { TbLoader2 } from "react-icons/tb";
-import SpecialOffer from "../special-offer";
-import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { TbLoader2 } from "react-icons/tb";
 
 interface PlanData {
   _id: string;
@@ -444,7 +442,7 @@ const PricingCard = ({
 
           <button
             onClick={onStartTrial}
-            className="bg-white text-gray-800 font-semibold py-3 px-6 rounded-full w-full max-w-xs mx-auto hover:bg-gray-100 transition mb-4"
+            className="bg-white cursor-pointer text-gray-800 font-semibold py-3 px-6 rounded-full w-full max-w-xs mx-auto hover:bg-gray-100 transition mb-4"
           >
             Start 3 days free trial
           </button>
@@ -470,7 +468,7 @@ const PricingWithTestimonials = ({
   selectedPlan: string;
   setSelectedPlan: (plan: string) => void;
 }) => {
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = useSearchParams();
   // Add state to store plan data from API
   const [planData, setPlanData] = useState<{
     pro?: PlanData;
@@ -618,8 +616,9 @@ const PricingWithTestimonials = ({
             "_blank"
           );
         }
+      } else if (funnel && funnel === "autoApply") {
+        return;
       } else {
-        //stripe implementation
         console.log({ selectedPlan });
         if (selectedPlan === "Pro") {
           if (planData.pro?.paymentPlanId?._id) {

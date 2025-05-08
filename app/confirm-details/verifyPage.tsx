@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client';
-import Navbar from '@/components/navbar';
-import CountdownTimer from '@/components/timer';
-import React, { useState, useEffect, useRef } from 'react';
+// @ts-nocheck
+"use client";
+import Navbar from "@/components/navbar";
+import CountdownTimer from "@/components/timer";
+import apiService from "@/services/api";
+import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import React, { useState, useEffect, useRef } from "react";
+import { TbLoader2 } from "react-icons/tb";
 // import Image from 'next/image';
 
 // TypeScript interfaces
@@ -17,27 +22,32 @@ interface TimeLeft {
   seconds: number;
 }
 
-type StepStatus = 'active' | 'completed' | 'upcoming';
+type StepStatus = "active" | "completed" | "upcoming";
 
 interface Step {
-  id: 'select-plan' | 'sign-up' | 'card-verification';
+  id: "select-plan" | "sign-up" | "card-verification";
   label: string;
   status: StepStatus;
 }
 
 const VerificationPage: React.FC = () => {
+  const searchParams = useSearchParams();
   // Form state
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    email: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const planId = searchParams.get("planId") || null;
 
   // Steps state
   const [steps, setSteps] = useState<Step[]>([
-    { id: 'select-plan', label: 'Select Plan', status: 'completed' },
-    { id: 'sign-up', label: 'Sign-up', status: 'active' },
-    { id: 'card-verification', label: 'Card Verification', status: 'upcoming' },
+    { id: "select-plan", label: "Select Plan", status: "completed" },
+    { id: "sign-up", label: "Sign-up", status: "active" },
+    { id: "card-verification", label: "Card Verification", status: "upcoming" },
   ]);
 
   // Timer state
@@ -57,26 +67,159 @@ const VerificationPage: React.FC = () => {
     }));
   };
 
+  const updateContactToDroppedOff = async (contactId: string) => {
+    await axios.put(
+      `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
+      {
+        tags: ["quiz-dropped_off"],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  };
+
+  const createLead = async () => {
+    const response = await axios.post(
+      "https://rest.gohighlevel.com/v1/contacts/",
+      {
+        ...formData,
+        tags: ["vbp_leads"],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data?.contact?.id;
+  };
+
+  const createLightforthPartnerUser = async () => {
+    try {
+      const response = await apiService.post(
+        "/account/create-lightforth-partner-user",
+        {
+          ...formData,
+          source: "funnel",
+        },
+        {
+          headers: {
+            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+          },
+        }
+      );
+      if (!response?.response?.newPartnerUser?.authorizerId) {
+        throw new Error(
+          response?.response?.authorizer?.message || "This user already exists"
+        );
+      }
+      return response?.response.newPartnerUser.authorizerId;
+    } catch (error) {
+      console.error("Error creating partner user:", error);
+      throw error;
+    }
+  };
+
+  const createUserSub = async (
+    planId: string,
+    authorizerId: string,
+    contactId: string
+  ) => {
+    try {
+      const payload: {
+        planId: string;
+        authorizerId: string;
+        contactId: string;
+      } = {
+        planId,
+        authorizerId,
+        contactId,
+      };
+
+      const response = await apiService.post(
+        "/account/create-lightforth-partner-user-subscription",
+        payload,
+        {
+          headers: {
+            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+          },
+        }
+      );
+
+      if (response.statusCode !== 200) {
+        throw new Error("Failed to create subscription");
+      }
+
+      const paymentLink = response.response?.paymentLink?.data;
+
+      if (!paymentLink) {
+        throw new Error("Payment link not found");
+      }
+
+      await updateContactToDroppedOff(contactId);
+
+      // Load the payment URL in the current window
+      window.location.href = paymentLink;
+
+      return true;
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      throw error;
+    }
+  };
+
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setIsLoading(true);
+    setError(null);
 
     // Update steps status
     const updatedSteps = steps.map((step) => {
-      if (step.id === 'sign-up')
-        return { ...step, status: 'completed' as StepStatus };
-      if (step.id === 'card-verification')
-        return { ...step, status: 'active' as StepStatus };
+      if (step.id === "sign-up")
+        return { ...step, status: "completed" as StepStatus };
+      if (step.id === "card-verification")
+        return { ...step, status: "active" as StepStatus };
       return step;
     });
 
     setSteps(updatedSteps);
 
-    // In a real app, you would submit the form data to your API here
-    console.log('Form submitted:', formData);
+    try {
+      if (!planId) {
+        throw new Error("Plan ID is missing");
+      }
 
-    // Navigate to next step (in a real app, you might redirect to a new page)
-    // router.push('/card-verification');
+      // Then create the partner user
+      const userAuthId = await createLightforthPartnerUser();
+      if (!userAuthId) {
+        throw new Error("Failed to create partner user");
+      }
+
+      const contactId = await createLead();
+      if (!contactId) {
+        throw new Error("Failed to create lead");
+      }
+
+      // Finally create the subscription
+      await createUserSub(planId, userAuthId, contactId);
+
+      // Success message could be added here
+      console.log("User subscription created successfully");
+      // Note: No need to set loading to false since we're redirecting
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+      console.error("Submission error:", err);
+      setIsLoading(false); // Only set loading to false on error, as success redirects page
+    }
   };
 
   // Countdown timer effect
@@ -99,7 +242,7 @@ const VerificationPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      <Navbar onClickScroll={() => console.log('')} />
+      <Navbar onClickScroll={() => console.log("")} />
       {/* Blue curved shape in bottom right */}
       {/* <div className="absolute bottom-0 right-0 w-full h-full pointer-events-none">
         <svg
@@ -130,14 +273,14 @@ const VerificationPage: React.FC = () => {
               <div className="flex items-center">
                 <div
                   className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                    step.status === 'completed'
-                      ? 'bg-blue-500 text-white'
-                      : step.status === 'active'
-                      ? 'border border-blue-500 text-blue-500'
-                      : 'border border-gray-300 text-gray-400'
+                    step.status === "completed"
+                      ? "bg-blue-500 text-white"
+                      : step.status === "active"
+                      ? "border border-blue-500 text-blue-500"
+                      : "border border-gray-300 text-gray-400"
                   }`}
                 >
-                  {step.status === 'completed' ? (
+                  {step.status === "completed" ? (
                     <svg
                       className="w-3 h-3"
                       fill="currentColor"
@@ -155,9 +298,9 @@ const VerificationPage: React.FC = () => {
                 </div>
                 <span
                   className={`ml-2 text-sm ${
-                    step.status === 'active'
-                      ? 'text-blue-500 font-medium'
-                      : 'text-gray-500'
+                    step.status === "active"
+                      ? "text-blue-500 font-medium"
+                      : "text-gray-500"
                   }`}
                 >
                   {step.label}
@@ -257,6 +400,7 @@ const VerificationPage: React.FC = () => {
                       onChange={handleInputChange}
                       className="w-full p-2 border border-gray-300 rounded text-sm"
                       required
+                      placeholder="Enter your First Name"
                     />
                   </div>
                   <div>
@@ -274,6 +418,7 @@ const VerificationPage: React.FC = () => {
                       onChange={handleInputChange}
                       className="w-full p-2 border border-gray-300 rounded text-sm"
                       required
+                      placeholder="Enter your Last Name"
                     />
                   </div>
                 </div>
@@ -293,7 +438,11 @@ const VerificationPage: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full p-2 border border-gray-300 rounded text-sm"
                     required
+                    placeholder="Enter a Valid Email"
                   />
+                  {error && (
+                    <div className="mt-4 text-red-600 text-sm">{error}</div>
+                  )}
                 </div>
 
                 {/* Information box */}
@@ -330,9 +479,22 @@ const VerificationPage: React.FC = () => {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded transition duration-150 ease-in-out"
+                  disabled={
+                    isLoading ||
+                    !formData.firstName ||
+                    !formData.lastName ||
+                    !formData.email
+                  }
+                  className={`cursor-pointer w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center `}
                 >
-                  Go to Step #3
+                  {isLoading ? (
+                    <p className="flex items-center gap-x-2">
+                      <TbLoader2 className="animate-spin transform transition-normal ease-in-out mx-auto text-xl" />
+                      <span>Processing...</span>
+                    </p>
+                  ) : (
+                    "Go to Step #3"
+                  )}
                 </button>
               </form>
             </div>
