@@ -370,7 +370,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
 import SpecialOffer from "../special-offer";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 
 interface PlanData {
@@ -480,6 +480,9 @@ const PricingWithTestimonials = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const contactId = searchParams.get("contactId") || null;
+
+  const funnel = searchParams.get("funnel") || null;
+  console.log({ funnel });
   // const authorizerId = searchParams.get("authorizerId") || null;
 
   // const openModal = () => setIsModalOpen(true);
@@ -488,7 +491,9 @@ const PricingWithTestimonials = ({
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await apiService.get<{ data: PlanData[] }>(
+        const response = await apiService.get<{
+          response: { data: PlanData[] };
+        }>(
           "/account/get-all-plans-for-partner",
           {},
           {
@@ -498,11 +503,15 @@ const PricingWithTestimonials = ({
           }
         );
 
-        if (response && response?.data && Array.isArray(response?.data)) {
+        if (
+          response &&
+          response?.response?.data &&
+          Array.isArray(response?.response?.data)
+        ) {
           // We only need the pro (index 0) and premium (index 2) plans
           setPlanData({
-            pro: response?.data[2],
-            premium: response?.data[0],
+            pro: response?.response?.data[2],
+            premium: response?.response?.data[0],
           });
         }
       } catch (err) {
@@ -535,6 +544,8 @@ const PricingWithTestimonials = ({
       setIsLoading(false);
     }
   };
+
+  const router = useRouter();
 
   // const createUserSub = async (planId: string) => {
   //   try {
@@ -593,18 +604,40 @@ const PricingWithTestimonials = ({
       });
 
       // Determine which URL to use
-      if (plan === "Pro") {
-        await updateContactToDroppedOff(contactId);
-        window.open(
-          "https://careersuccess.lightforth.org/checkout-order-3827",
-          "_blank"
-        );
-      } else if (plan === "Premium") {
-        await updateContactToDroppedOff(contactId);
-        window.open(
-          "https://careersuccess.lightforth.org/checkout-order-3827-9663",
-          "_blank"
-        );
+      if (funnel && funnel === "jobApplication") {
+        if (plan === "Pro") {
+          await updateContactToDroppedOff(contactId);
+          window.open(
+            "https://careersuccess.lightforth.org/checkout-order-3827",
+            "_blank"
+          );
+        } else if (plan === "Premium") {
+          await updateContactToDroppedOff(contactId);
+          window.open(
+            "https://careersuccess.lightforth.org/checkout-order-3827-9663",
+            "_blank"
+          );
+        }
+      } else {
+        //stripe implementation
+        console.log({ selectedPlan });
+        if (selectedPlan === "Pro") {
+          if (planData.pro?.paymentPlanId?._id) {
+            router.push(
+              `/confirm-details?planId=${planData.pro.paymentPlanId._id}`
+            );
+          } else {
+            return;
+          }
+        } else {
+          if (planData.premium?.paymentPlanId?._id) {
+            router.push(
+              `/confirm-details?planId=${planData.premium.paymentPlanId._id}`
+            );
+          } else {
+            return;
+          }
+        }
       }
     } catch (err) {
       setError(
