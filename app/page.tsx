@@ -73,7 +73,7 @@ export default function Home() {
         </div>
       }
     >
-      <div className="snap-y snap-mandatory">
+      <div className=" snap-y snap-mandatory">
         <Navbar onClickScroll={scrollToSection} />
         <main className="px-3 md:px-0">
           <HeroSection onClickScroll={scrollToSection} />

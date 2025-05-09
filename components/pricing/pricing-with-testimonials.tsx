@@ -478,10 +478,9 @@ const PricingWithTestimonials = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const contactId = searchParams.get("contactId") || null;
-
+  const authorizerId = searchParams.get("authorizerId") || null;
   const funnel = searchParams.get("funnel") || null;
-  console.log({ funnel });
-  // const authorizerId = searchParams.get("authorizerId") || null;
+  console.log({ funnel, contactId, authorizerId });
 
   // const openModal = () => setIsModalOpen(true);
 
@@ -545,104 +544,118 @@ const PricingWithTestimonials = ({
 
   const router = useRouter();
 
-  // const createUserSub = async (planId: string) => {
-  //   try {
-  //     const payload: {
-  //       planId: string;
-  //       authorizerId: string;
-  //       contactId: string;
-  //     } = {
-  //       planId,
-  //       authorizerId,
-  //       contactId,
-  //     };
+  const createUserSub = async (planId: string) => {
+    try {
+      const payload: {
+        planId: string;
+        authorizerId: string | null;
+        contactId: string | null;
+      } = {
+        planId,
+      };
 
-  //     const response = await apiService.post(
-  //       "/account/create-lightforth-partner-user-subscription",
-  //       payload,
-  //       {
-  //         headers: {
-  //           "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
-  //         },
-  //       }
-  //     );
+      if (authorizerId && contactId) {
+        payload.contactId = contactId;
+        payload.authorizerId = authorizerId;
+      }
 
-  //     if (response.statusCode !== 200) {
-  //       throw new Error("Failed to create subscription");
-  //     }
+      const response = await apiService.post(
+        "/account/create-lightforth-partner-user-subscription",
+        payload,
+        {
+          headers: {
+            "x-signature": process.env.NEXT_PUBLIC_AUTO_X_SIGNATURE || "",
+          },
+        }
+      );
 
-  //     const paymentLink = response.response?.paymentLink?.data;
+      if (response.statusCode !== 200) {
+        throw new Error("Failed to create subscription");
+      }
 
-  //     if (!paymentLink) {
-  //       throw new Error("Payment link not found");
-  //     }
+      const paymentLink = response.response?.paymentLink?.data;
 
-  //     await updateContactToDroppedOff(contactId);
+      if (!paymentLink) {
+        throw new Error("Payment link not found");
+      }
 
-  //     // Load the payment URL in the current window
-  //     window.location.href = paymentLink;
+      await updateContactToDroppedOff(contactId);
 
-  //     return true;
-  //   } catch (error) {
-  //     console.error("Error creating subscription:", error);
-  //     throw error;
-  //   }
-  // };
+      // Load the payment URL in the current window
+      window.location.href = paymentLink;
 
-  // Handle CTA button click with dynamic payment URLs
+      return true;
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      throw error;
+    }
+  };
+
+  /**
+   * Handle payment button click with dynamic payment URLs
+   */
   const handlePaymentClick = async (plan: string) => {
     setIsLoading(true);
     setError(null);
+
     try {
-      // Track analytics as before
+      // Track analytics event
       trackAction("QValue_Bump", {
         selectedPlan: plan,
         planType: plan === "Pro" ? "Pro" : "Premium",
         price: plan === "Pro" ? 78.99 : 128.99,
       });
 
-      // Determine which URL to use
-      if (funnel && funnel === "jobApplication") {
-        if (plan === "Pro") {
-          await updateContactToDroppedOff(contactId);
-          window.open(
-            "https://careersuccess.lightforth.org/checkout-order-3827",
-            "_blank"
-          );
-        } else if (plan === "Premium") {
-          await updateContactToDroppedOff(contactId);
-          window.open(
-            "https://careersuccess.lightforth.org/checkout-order-3827-9663",
-            "_blank"
-          );
-        }
-      } else if (funnel && funnel === "autoApply") {
+      // Job Application funnel
+      if (funnel === "jobApplication") {
+        await updateContactToDroppedOff(contactId);
+        const checkoutUrl =
+          plan === "Pro"
+            ? "https://careersuccess.lightforth.org/checkout-order-3827"
+            : "https://careersuccess.lightforth.org/checkout-order-3827-9663";
+        window.open(checkoutUrl, "_blank");
         return;
-      } else {
-        console.log({ selectedPlan });
-        if (selectedPlan === "Pro") {
-          if (planData.pro?.paymentPlanId?._id) {
-            router.push(
-              `/confirm-details?planId=${planData.pro.paymentPlanId._id}`
-            );
-          } else {
-            return;
-          }
-        } else {
-          if (planData.premium?.paymentPlanId?._id) {
-            router.push(
-              `/confirm-details?planId=${planData.premium.paymentPlanId._id}`
-            );
-          } else {
-            return;
-          }
-        }
       }
+
+      // Auto Apply funnel
+      if (
+        funnel === "autoApply" &&
+        contactId &&
+        authorizerId &&
+        ![contactId, authorizerId].includes("null")
+      ) {
+        const paymentPlanId =
+          plan === "Pro"
+            ? planData.pro?.paymentPlanId?._id
+            : planData.premium?.paymentPlanId?._id;
+
+        if (!paymentPlanId) {
+          console.error(`No payment plan ID found for ${plan} plan`);
+          return;
+        }
+
+        await createUserSub(paymentPlanId);
+        return;
+      }
+
+      // Default flow
+      const paymentPlanId =
+        plan === "Pro"
+          ? planData.pro?.paymentPlanId?._id
+          : planData.premium?.paymentPlanId?._id;
+
+      if (!paymentPlanId) {
+        console.error(`No payment plan ID found for ${plan} plan`);
+        return;
+      }
+
+      router.push(`/confirm-details?planId=${paymentPlanId}`);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unknown error occurred"
-      );
-      console.error("Submission error:", err);
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred";
+      setError(errorMessage);
+      console.error("Payment submission error:", err);
+    } finally {
       setIsLoading(false);
     }
   };

@@ -262,17 +262,17 @@ const VerificationPage: React.FC = () => {
 
       <div className="relative w-full max-w-6xl mx-auto px-4 py-8 mt-12">
         {/* Progress Steps */}
-        <div className="flex justify-end mb-12 space-x-4">
+        <div className="flex flex-wrap justify-center sm:justify-end mb-12 gap-4">
           {steps.map((step, index) => (
             <React.Fragment key={step.id}>
               {index > 0 && (
-                <div className="flex items-center">
+                <div className="hidden sm:flex items-center">
                   <div className="w-8 h-[1px] bg-gray-300"></div>
                 </div>
               )}
               <div className="flex items-center">
                 <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
                     step.status === "completed"
                       ? "bg-blue-500 text-white"
                       : step.status === "active"
@@ -293,7 +293,7 @@ const VerificationPage: React.FC = () => {
                       />
                     </svg>
                   ) : (
-                    <span className="text-xs">{index + 1}</span>
+                    <span>{index + 1}</span>
                   )}
                 </div>
                 <span
@@ -309,7 +309,6 @@ const VerificationPage: React.FC = () => {
             </React.Fragment>
           ))}
         </div>
-
         {/* Headline with blue underline */}
         <div className="flex justify-center items-center text-center mb-10 relative">
           <svg
@@ -346,11 +345,12 @@ const VerificationPage: React.FC = () => {
             >
               <iframe
                 className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/oRCGjicLWkQ?controls=1"
-                title="How I Landed 5 Job Offers in 3 Weeks"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+                src="https://www.youtube.com/embed/h6XYpPefAKg"
+                title="How I Landed 5 Job Offers Without Lifting a Finger | The AI Tool That Does It ALL | #JobSearchHack"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
               ></iframe>
             </div>
 
@@ -384,7 +384,7 @@ const VerificationPage: React.FC = () => {
               </h2>
 
               <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label
                       htmlFor="firstName"
@@ -502,7 +502,7 @@ const VerificationPage: React.FC = () => {
         </div>
 
         {/* Timer */}
-        <div className="text-left">
+        <div className="text-center pt-5 md:text-left">
           <p className="text-sm font-medium text-gray-600 mb-1">
             THIS OFFER ENDS IN
           </p>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const HeroSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
   const [minutes, setMinutes] = useState(9);
@@ -22,15 +22,15 @@ const HeroSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
   }, [minutes, seconds]);
 
   const addedText = [
-    '✓ 71% of users get at least 2 interviews before trial ends',
-    '✓ Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more',
-    '✓ Copilot answers interview questions even if they ask you to share your screen',
+    "✓ 71% of users get at least 2 interviews before trial ends",
+    "✓ Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more",
+    "✓ Copilot answers interview questions even if they ask you to share your screen",
   ];
 
   return (
-    <div className="relative mt-12">
+    <div className="w-full mt-12">
       {/* Blue curved shape in top right corner */}
-      <div className="absolute top-[-5%] right-[-15%] w-1/2 h-full">
+      <div className="block 3xl:hidden  absolute top-[-3%] right-[-18%] w-1/2 h-full">
         <svg
           width="616"
           height="349"
@@ -90,12 +90,12 @@ const HeroSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
         <div
           className="max-w-4xl mx-auto mb-8"
           style={{
-            borderLeft: '12px solid #0494FC',
-            borderBottom: '12px solid #22DF72',
-            background: 'linear-gradient(135deg, #0494FC 0%, #22DF72 100%)',
+            borderLeft: "12px solid #0494FC",
+            borderBottom: "12px solid #22DF72",
+            background: "linear-gradient(135deg, #0494FC 0%, #22DF72 100%)",
           }}
         >
-          <div className="relative" style={{ paddingTop: '56.25%' }}>
+          <div className="relative" style={{ paddingTop: "56.25%" }}>
             <iframe
               src="https://www.youtube.com/embed/oRCGjicLWkQ"
               title="How I Landed 5 Job Offers in 3 Weeks"
@@ -170,7 +170,7 @@ const HeroSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
             <p
               key={index}
               className="text-sm text-[#7A7A83] mb-2"
-              style={{ fontSize: '0.875rem' }}
+              style={{ fontSize: "0.875rem" }}
             >
               {/* svg */}
 
