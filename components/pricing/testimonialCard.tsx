@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 // Testimonial Card Component
 interface TestimonialCardProps {
@@ -73,7 +73,7 @@ const TestimonialCard = ({
 // Gold Badge Component with Shine Effects
 const GoldBadge = () => {
   return (
-    <div className="absolute -top-22 -right-12">
+    <div className="absolute -top-22 right-12 md:-top-16 md:-right-10 w-full h-full">
       <svg
         width="117"
         height="138"
@@ -250,30 +250,51 @@ const GuaranteeSection = () => {
     <section className="py-16 bg-white">
       <div className="max-w-4xl mx-auto px-4">
         {/* 21 Days Guarantee Badge */}
-        <div className="flex justify-center mb-10">
-          <div className="relative">
-            {/* Black Border Rectangle */}
-            <div className="border-2 border-black rounded-xl px-10 py-5 flex items-center">
-              <span className="text-7xl font-black leading-none">21</span>
-              <div className="ml-3">
-                <div className="text-3xl font-bold uppercase leading-none">
+        <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 lg:mb-12">
+          <div className="relative w-[300px] sm:w-[400px] md:w-[500px] aspect-[5/2]">
+            {/* Main Content Container */}
+            <div
+              className="absolute inset-0 border-2 sm:border-[3px] border-black rounded-xl md:rounded-2xl
+                     flex items-center justify-center p-4 sm:p-6 md:p-8"
+            >
+              {/* Number */}
+              <span
+                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-none
+                       transform scale-90 sm:scale-100"
+              >
+                21
+              </span>
+
+              {/* Text Container */}
+              <div className="ml-2 sm:ml-3 md:ml-4">
+                <div
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold uppercase
+                        leading-tight tracking-tight"
+                >
                   DAYS
                 </div>
-                <div className="text-xl font-semibold uppercase">GUARANTEE</div>
+                <div
+                  className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold uppercase
+                        tracking-wide mt-1 sm:mt-1.5"
+                >
+                  GUARANTEE
+                </div>
               </div>
             </div>
 
-            {/* Gold Badge/Seal */}
-            <GoldBadge />
+            {/* Gold Badge/Seal - Ensure it's responsive */}
+            <div className="absolute -top-[5%] -right-[5%] w-[25%] aspect-square">
+              <GoldBadge />
+            </div>
           </div>
         </div>
 
         {/* Guarantee Text */}
         <div className="text-center mb-14">
           <p className="text-gray-800 text-lg leading-relaxed max-w-[550px] mx-auto">
-            {` We're so confident Lightforth can help you see tangible results that we 
-            guarantee it. If after actively learning and applying our methods and engaging 
-            with our community, you don't see measurable results in 90 days, we offer a 
+            {` We're so confident Lightforth can help you see tangible results that we
+            guarantee it. If after actively learning and applying our methods and engaging
+            with our community, you don't see measurable results in 90 days, we offer a
             full refund of your investment.`}
           </p>
         </div>

@@ -58,7 +58,7 @@ const VideoCard = ({ video }: { video: Video }) => {
       )}
 
       {video.type === "instagram" && (
-        <div className="relative pb-[100%] min-h-[600px]">
+        <>
           {" "}
           {/* Square aspect ratio for Instagram */}
           <iframe
@@ -66,15 +66,16 @@ const VideoCard = ({ video }: { video: Video }) => {
               video.src
             )}/embed/`}
             title={video.title}
-            className="absolute inset-0 w-full h-full border-0"
+            // className="absolute inset-0 w-full h-full border-0"
+            className="relative w-full h-full border-0"
             height={700}
             allowFullScreen
             onLoad={() => setIsLoading(false)}
           />
-          {isLoading && (
+          {/* {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse"></div>
-          )}
-        </div>
+          )} */}
+        </>
       )}
     </div>
   );

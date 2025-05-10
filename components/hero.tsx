@@ -28,15 +28,14 @@ const HeroSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
   ];
 
   return (
-    <div className="w-full mt-12">
-      {/* Blue curved shape in top right corner */}
-      <div className="block 3xl:hidden  absolute top-[-3%] right-[-18%] w-1/2 h-full">
+    <div className="w-full mt-12 relative overflow-x-hidden">
+      {/* Responsive blue curved shape */}
+      <div className="absolute md:top-[-6%] right-[-18%] w-[50vw] min-h-[50vh] 3xl:hidden">
         <svg
-          width="616"
-          height="349"
           viewBox="0 0 616 349"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+          preserveAspectRatio="xMinYMin slice"
         >
           <circle
             cx="404"
