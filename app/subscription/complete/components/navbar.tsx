@@ -10,7 +10,7 @@ const Navbar = () => {
           <div className="flex gap-x-5 lg:gap-x-24 items-center">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Link href="https://lightforth.org">
+                <Link href="/">
                   <div className="h-8 w-auto cursor-pointer">
                     <Image
                       src="/images/logo.svg"
