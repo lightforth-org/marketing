@@ -345,7 +345,8 @@ const VerificationPage: React.FC = () => {
             >
               <iframe
                 className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/h6XYpPefAKg"
+                // src="https://www.youtube.com/embed/h6XYpPefAKg"
+                src="https://www.youtube.com/embed/oRCGjicLWkQ"
                 title="How I Landed 5 Job Offers Without Lifting a Finger | The AI Tool That Does It ALL | #JobSearchHack"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
