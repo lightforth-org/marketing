@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
+import { updateContactToDroppedOff } from "@/lib/ghlActions";
 
 interface PlanData {
   _id: string;
@@ -107,6 +108,8 @@ const PricingWithTestimonials = ({
   setSelectedPlan: (plan: string) => void;
 }) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   // Add state to store plan data from API
   const [planData, setPlanData] = useState<{
     pro?: PlanData;
@@ -115,12 +118,17 @@ const PricingWithTestimonials = ({
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const contactId = searchParams.get("contactId") || null;
-  const authorizerId = searchParams.get("authorizerId") || null;
   const funnel = searchParams.get("funnel") || null;
-  console.log({ funnel, contactId, authorizerId });
+  console.log({ funnel });
 
   // const openModal = () => setIsModalOpen(true);
+
+  const xSignature =
+    funnel === "jobApplication"
+      ? process.env.NEXT_PUBLIC_X_SIGNATURE
+      : funnel === "autoApply"
+      ? process.env.NEXT_PUBLIC_AUTO_X_SIGNATURE
+      : process.env.NEXT_PUBLIC_VBP_X_SIGNATURE;
 
   // Fetch plans on component mount
   useEffect(() => {
@@ -133,7 +141,7 @@ const PricingWithTestimonials = ({
           {},
           {
             headers: {
-              "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+              "x-signature": xSignature || "",
             },
           }
         );
@@ -158,84 +166,13 @@ const PricingWithTestimonials = ({
     fetchPlans();
   }, []);
 
-  const updateContactToDroppedOff = async (contactId: string | null) => {
-    setIsLoading(true);
-    try {
-      await axios.put(
-        `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
-        {
-          tags: ["quiz-dropped_off"],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    } catch (err) {
-      console.log("Failed to update contact:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const router = useRouter();
-
-  const createUserSub = async (planId: string) => {
-    try {
-      const payload: {
-        planId: string;
-        authorizerId?: string | null;
-        contactId?: string | null;
-      } = {
-        planId,
-      };
-
-      if (authorizerId && contactId) {
-        payload.contactId = contactId;
-        payload.authorizerId = authorizerId;
-      }
-
-      const response = await apiService.post(
-        "/account/create-lightforth-partner-user-subscription",
-        payload,
-        {
-          headers: {
-            "x-signature": process.env.NEXT_PUBLIC_AUTO_X_SIGNATURE || "",
-          },
-        }
-      );
-
-      if (response.statusCode !== 200) {
-        throw new Error("Failed to create subscription");
-      }
-
-      const paymentLink = response.response?.paymentLink?.data;
-
-      if (!paymentLink) {
-        throw new Error("Payment link not found");
-      }
-
-      await updateContactToDroppedOff(contactId);
-
-      // Load the payment URL in the current window
-      window.location.href = paymentLink;
-
-      return true;
-    } catch (error) {
-      console.error("Error creating subscription:", error);
-      throw error;
-    }
-  };
-
   /**
    * Handle payment button click with dynamic payment URLs
    */
+
   const handlePaymentClick = async (plan: string) => {
     setIsLoading(true);
     setError(null);
-
     try {
       // Track analytics event
       trackAction("QValue_Bump", {
@@ -246,7 +183,7 @@ const PricingWithTestimonials = ({
 
       // Job Application funnel
       if (funnel === "jobApplication") {
-        await updateContactToDroppedOff(contactId);
+        await updateContactToDroppedOff(contactId, ["quiz-dropped_off"]);
         const checkoutUrl =
           plan === "Pro"
             ? "https://buy.stripe.com/bIY17CgY99cQ1e8eUW"
@@ -255,28 +192,6 @@ const PricingWithTestimonials = ({
         return;
       }
 
-      // Auto Apply funnel
-      if (
-        funnel === "autoApply" &&
-        contactId &&
-        authorizerId &&
-        ![contactId, authorizerId].includes("null")
-      ) {
-        const paymentPlanId =
-          plan === "Pro"
-            ? planData.pro?.paymentPlanId?._id
-            : planData.premium?.paymentPlanId?._id;
-
-        if (!paymentPlanId) {
-          console.error(`No payment plan ID found for ${plan} plan`);
-          return;
-        }
-
-        await createUserSub(paymentPlanId);
-        return;
-      }
-
-      // Default flow
       const paymentPlanId =
         plan === "Pro"
           ? planData.pro?.paymentPlanId?._id
@@ -287,7 +202,16 @@ const PricingWithTestimonials = ({
         return;
       }
 
-      router.push(`/confirm-details?planId=${paymentPlanId}`);
+      // Explicitly handle Auto Apply funnel routing
+      if (funnel === "autoApply") {
+        router.push(
+          `/confirm-details?funnel=autoApply&planId=${paymentPlanId}`
+        );
+        return;
+      }
+
+      // Default flow (VBP)
+      router.push(`/confirm-details?funnel=vbp&planId=${paymentPlanId}`);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unknown error occurred";

@@ -26,7 +26,7 @@ const Navbar = () => {
                 <Link href="/">
                   <div className="h-8 w-auto cursor-pointer">
                     <Image
-                      src="/images/logo-sm.svg"
+                      src="/imagehttps://lightforth.orgs/logo-sm.svg"
                       alt="Lightforth Logo small"
                       width={120}
                       height={32}

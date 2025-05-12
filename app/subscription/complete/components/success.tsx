@@ -15,8 +15,8 @@ const Success = () => {
         Check Your Email!
       </h2>
       <p className="mt-4 text-md text-gray-600">
-        Your account has been successfully created, and your $1 payment will be
-        refunded. Find your temporary password in your inbox to log in.
+        Your account has been successfully created, Find your temporary password
+        in your inbox to log in.
       </p>
     </div>
   );

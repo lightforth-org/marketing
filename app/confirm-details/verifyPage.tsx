@@ -3,11 +3,13 @@
 "use client";
 import Navbar from "@/components/navbar";
 import CountdownTimer from "@/components/timer";
+import { updateContactToDroppedOff, createLead } from "@/lib/ghlActions";
 import apiService from "@/services/api";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 import { TbLoader2 } from "react-icons/tb";
+
 // import Image from 'next/image';
 
 // TypeScript interfaces
@@ -42,6 +44,7 @@ const VerificationPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const planId = searchParams.get("planId") || null;
+  const funnel = searchParams.get("funnel") || null;
 
   // Steps state
   const [steps, setSteps] = useState<Step[]>([
@@ -58,6 +61,16 @@ const VerificationPage: React.FC = () => {
 
   const videoRef = useRef<HTMLDivElement>(null);
 
+  const droppedOffTags =
+    funnel === "autoApply" ? ["F2-auto-dropped_off"] : ["F3-vbp-dropped_off"];
+
+  const leadsTags =
+    funnel === "autoApply" ? ["F2-auto-leads"] : ["F3-vbp-leads"];
+
+  const xSignature =
+    funnel === "autoApply"
+      ? process.env.NEXT_PUBLIC_AUTO_X_SIGNATURE
+      : process.env.NEXT_PUBLIC_VBP_X_SIGNATURE;
   // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -65,38 +78,6 @@ const VerificationPage: React.FC = () => {
       ...prev,
       [name]: value,
     }));
-  };
-
-  const updateContactToDroppedOff = async (contactId: string) => {
-    await axios.put(
-      `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
-      {
-        tags: ["auto-dropped_off"],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  };
-
-  const createLead = async () => {
-    const response = await axios.post(
-      "https://rest.gohighlevel.com/v1/contacts/",
-      {
-        ...formData,
-        tags: ["vbp_leads"],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GHL_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data?.contact?.id;
   };
 
   const createLightforthPartnerUser = async () => {
@@ -109,7 +90,7 @@ const VerificationPage: React.FC = () => {
         },
         {
           headers: {
-            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+            "x-signature": xSignature || "",
           },
         }
       );
@@ -146,7 +127,7 @@ const VerificationPage: React.FC = () => {
         payload,
         {
           headers: {
-            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+            "x-signature": xSignature || "",
           },
         }
       );
@@ -161,7 +142,7 @@ const VerificationPage: React.FC = () => {
         throw new Error("Payment link not found");
       }
 
-      await updateContactToDroppedOff(contactId);
+      await updateContactToDroppedOff(contactId, droppedOffTags);
 
       // Load the payment URL in the current window
       window.location.href = paymentLink;
@@ -202,7 +183,7 @@ const VerificationPage: React.FC = () => {
         throw new Error("Failed to create partner user");
       }
 
-      const contactId = await createLead();
+      const contactId = await createLead(formData, leadsTags);
       if (!contactId) {
         throw new Error("Failed to create lead");
       }
