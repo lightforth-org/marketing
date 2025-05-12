@@ -104,10 +104,16 @@ const VideoGrid = () => {
     },
     {
       id: "video4",
-      title: "Instagram Post",
-      src: "https://www.instagram.com/p/DJULXYKujGb/",
-      type: "instagram",
+      title: "Short Video 4",
+      src: "https://youtube.com/shorts/a0tnYSMtLDA",
+      type: "youtube",
     },
+    // {
+    //   id: "video4",
+    //   title: "Instagram Post",
+    //   src: "https://www.instagram.com/p/DJULXYKujGb/",
+    //   type: "instagram",
+    // },
   ];
 
   return (
