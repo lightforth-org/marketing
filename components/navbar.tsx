@@ -9,7 +9,7 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
         <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Logo Section */}
           <div className="flex items-center flex-shrink-0">
-            <Link href="https://lightforth.org" className="cursor-pointer">
+            <Link href="/" className="cursor-pointer">
               <div className="relative h-8 w-8 sm:w-32">
                 {/* Desktop Logo */}
                 <Image

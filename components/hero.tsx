@@ -96,7 +96,7 @@ const HeroSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
         >
           <div className="relative" style={{ paddingTop: "56.25%" }}>
             <iframe
-              src="https://www.youtube.com/embed/oRCGjicLWkQ"
+              src="https://www.youtube.com/embed/h6XYpPefAKg"
               title="How I Landed 5 Job Offers in 3 Weeks"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
