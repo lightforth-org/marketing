@@ -136,15 +136,11 @@ const PricingWithTestimonials = ({
       try {
         const response = await apiService.get<{
           response: { data: PlanData[] };
-        }>(
-          "/account/get-all-plans-for-partner",
-          {},
-          {
-            headers: {
-              "x-signature": xSignature || "",
-            },
-          }
-        );
+        }>("/account/get-all-plans-for-partner", {
+          headers: {
+            "x-signature": xSignature || "",
+          },
+        });
 
         if (
           response &&
@@ -164,7 +160,7 @@ const PricingWithTestimonials = ({
     };
 
     fetchPlans();
-  }, []);
+  }, [xSignature]);
 
   /**
    * Handle payment button click with dynamic payment URLs

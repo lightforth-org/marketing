@@ -1,11 +1,10 @@
 "use client";
-import axios from "axios";
+import { updateContactToTrial } from "@/lib/ghlActions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import Broken from "./broken";
 import Navbar from "./navbar";
 import Success from "./success";
-import { updateContactToTrial } from "@/lib/ghlActions";
 
 function SubComplete() {
   const searchParams = useSearchParams();
