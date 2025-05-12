@@ -183,7 +183,6 @@ const PricingWithTestimonials = ({
 
       // Job Application funnel
       if (funnel === "jobApplication") {
-        await updateContactToDroppedOff(contactId, ["quiz-dropped_off"]);
         const checkoutUrl =
           plan === "Pro"
             ? "https://buy.stripe.com/bIY17CgY99cQ1e8eUW"
