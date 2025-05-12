@@ -249,8 +249,8 @@ const PricingWithTestimonials = ({
         await updateContactToDroppedOff(contactId);
         const checkoutUrl =
           plan === "Pro"
-            ? "https://careersuccess.lightforth.org/checkout-order-3827"
-            : "https://careersuccess.lightforth.org/checkout-order-3827-9663";
+            ? "https://buy.stripe.com/bIY17CgY99cQ1e8eUW"
+            : "https://buy.stripe.com/eVa2bG6jvcp2bSM7st";
         window.open(checkoutUrl, "_blank");
         return;
       }
