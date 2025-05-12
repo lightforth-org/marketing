@@ -71,7 +71,7 @@ const VerificationPage: React.FC = () => {
     await axios.put(
       `https://rest.gohighlevel.com/v1/contacts/${contactId}`,
       {
-        tags: ["quiz-dropped_off"],
+        tags: ["auto-dropped_off"],
       },
       {
         headers: {
