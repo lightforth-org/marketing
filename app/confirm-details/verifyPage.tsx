@@ -3,11 +3,11 @@
 "use client";
 import Navbar from "@/components/navbar";
 import CountdownTimer from "@/components/timer";
-import { updateContactToDroppedOff, createLead } from "@/lib/ghlActions";
+import { createLead, updateContactToDroppedOff } from "@/lib/ghlActions";
 import apiService from "@/services/api";
-import axios from "axios";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
 
 // import Image from 'next/image';
@@ -224,24 +224,8 @@ const VerificationPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
       <Navbar onClickScroll={() => console.log("")} />
-      {/* Blue curved shape in bottom right */}
-      {/* <div className="absolute bottom-0 right-0 w-full h-full pointer-events-none">
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 500 500"
-          preserveAspectRatio="none"
-          style={{ position: 'absolute', right: -200, bottom: -350 }}
-        >
-          <path
-            d="M500,0 Q250,150 0,0 L0,500 L500,500 L500,0 Z"
-            fill="#0070f3"
-            opacity="0.9"
-          ></path>
-        </svg>
-      </div> */}
 
-      <div className="relative w-full max-w-6xl mx-auto px-4 py-8 mt-12">
+      <div className="relative w-full max-w-[70%] mx-auto px-4 py-8 mt-12">
         {/* Progress Steps */}
         <div className="flex flex-wrap justify-center sm:justify-end mb-12 gap-4">
           {steps.map((step, index) => (
@@ -255,7 +239,7 @@ const VerificationPage: React.FC = () => {
                 <div
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
                     step.status === "completed"
-                      ? "bg-blue-500 text-white"
+                      ? "bg-[#1b9dfc] text-white"
                       : step.status === "active"
                       ? "border border-blue-500 text-blue-500"
                       : "border border-gray-300 text-gray-400"
@@ -380,7 +364,7 @@ const VerificationPage: React.FC = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
+                      className="w-full p-3 border border-gray-300 rounded text-sm"
                       required
                       placeholder="Enter your First Name"
                     />
@@ -398,7 +382,7 @@ const VerificationPage: React.FC = () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
+                      className="w-full p-3 border border-gray-300 rounded text-sm"
                       required
                       placeholder="Enter your Last Name"
                     />
@@ -418,7 +402,7 @@ const VerificationPage: React.FC = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded text-sm"
+                    className="w-full p-3 border border-gray-300 rounded text-sm"
                     required
                     placeholder="Enter a Valid Email"
                   />
@@ -428,35 +412,27 @@ const VerificationPage: React.FC = () => {
                 </div>
 
                 {/* Information box */}
-                <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
-                  <div className="flex">
-                    <span className="text-blue-600 mt-0.5 mr-2 flex-shrink-0">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z" />
-                      </svg>
-                    </span>
-                    <div>
-                      <p className="text-sm font-medium text-blue-700 mb-1">
-                        Important Information
-                      </p>
-                      <p className="text-xs text-blue-800 mb-2">
-                        A $1 verification charge will appear on your card, but
-                        it will be immediately refunded. This is just to verify
-                        your payment method.
-                      </p>
-                      <p className="text-xs text-blue-800">
-                        {`After successful verification, we'll send a temporary
-                        password to your email address. You can use this to log
-                        in and enjoy your 3-day free trial.`}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <AnimatePresence>
+                  {formData.email && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6"
+                    >
+                      <div className="flex">
+                        <div>
+                          <p className="text-xs text-blue-800">
+                            {`After successful verification, we'll send a temporary
+                      password to your email address. You can use this to log
+                      in and enjoy your 3-day free trial.`}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Submit Button */}
                 <button
@@ -467,7 +443,7 @@ const VerificationPage: React.FC = () => {
                     !formData.lastName ||
                     !formData.email
                   }
-                  className={`cursor-pointer w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center `}
+                  className={`cursor-pointer w-full bg-[#1b9dfc] hover:bg-blue-600 text-white text-base font-medium py-4 rounded transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center `}
                 >
                   {isLoading ? (
                     <p className="flex items-center gap-x-2">
