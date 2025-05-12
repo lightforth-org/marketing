@@ -86,7 +86,7 @@ const PricingCard = ({
           </button>
 
           <p className="text-xs text-center leading-tight">
-            MONTHLY MEMBERSHIP WILL REBILL AT $79/
+            MONTHLY MEMBERSHIP WILL REBILL AT ${price}/
             <br />
             MONTH AFTER 3 DAY TRIAL. CANCEL ANYTIME.
           </p>
