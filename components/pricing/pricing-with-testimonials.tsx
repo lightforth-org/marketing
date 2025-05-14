@@ -242,7 +242,10 @@ const PricingWithTestimonials = ({
         <div className="mt-10 max-w-xl mx-auto px-2">
           <AnimatedButton onClick={handlePaymentClick}>
             {loading ? (
-              <AiOutlineLoading3Quarters className="animate-spin mr-2 text-white text-xl" />
+              <span className="inline-flex items-center gap-x-2 text-sm text-white">
+                <AiOutlineLoading3Quarters className="animate-spin text-xl transform transition-normal ease-in-out mx-auto " />
+                <span>Please wait</span>
+              </span>
             ) : (
               "Start getting jobs, cancel anytime"
             )}
