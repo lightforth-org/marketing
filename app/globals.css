@@ -33,6 +33,10 @@ body {
   /* Smooth scrolling for better navigation experience */
   scroll-behavior: smooth;
 
+  /* Enable scroll snap for sections */
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 1rem; /* Adjust for fixed headers if needed */
+
   /* Responsive base settings */
   max-width: 100%;
   overflow-x: hidden;

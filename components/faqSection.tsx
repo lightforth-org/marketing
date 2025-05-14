@@ -19,7 +19,7 @@ const FAQItem: React.FC<FAQItemProps> = ({
   return (
     <div className="mb-4">
       <button
-        className={`bg-[#1A1A1A] cursor-pointer rounded-md text-white w-full p-4 flex justify-between items-center ${
+        className={`bg-[#1A1A1A] cursor-pointer rounded-md text-white w-full p-4 flex justify-between items-center transition ease-in-out ${
           isOpen ? "rounded-none rounded-tr-md rounded-tl-md" : ""
         }`}
         onClick={toggleOpen}
@@ -34,7 +34,7 @@ const FAQItem: React.FC<FAQItemProps> = ({
         </span>
       </button>
       {isOpen && (
-        <div className="bg-[#1A1A1A] text-[#8A8A8A] p-4 rounded-b-md text-sm">
+        <div className="transition-transform ease-in-out bg-[#1A1A1A] text-[#8A8A8A] p-4 rounded-b-md text-sm">
           {answer}
         </div>
       )}

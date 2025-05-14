@@ -123,17 +123,17 @@ const TestimonialCarousel = () => {
           </div>
 
           {/* Navigation Arrows */}
-          <div className="absolute top-1/2 left-0 right-0 -mt-4 flex justify-between pointer-events-none">
+          <div className="absolute top-1/2 left-0 right-0 -mt-4  flex justify-between pointer-events-none">
             <button
               onClick={prevSlide}
-              className="pointer-events-auto p-1 md:p-2 rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 transform -translate-x-1/2"
+              className="pointer-events-auto p-1 md:p-4 cursor-pointer rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 transform -translate-x-1/2"
               aria-label="Previous testimonials"
             >
               <FiArrowLeft className="h-4 w-4 md:h-5 md:w-5 text-gray-600" />
             </button>
             <button
               onClick={nextSlide}
-              className="pointer-events-auto p-1 md:p-2 rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 transform translate-x-1/2"
+              className="pointer-events-auto p-1 md:p-4 cursor-pointer rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 transform translate-x-1/2"
               aria-label="Next testimonials"
             >
               <FiArrowRight className="h-4 w-4 md:h-5 md:w-5 text-gray-600" />

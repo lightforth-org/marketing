@@ -7,8 +7,8 @@ import { motion } from "framer-motion";
 const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
   return (
     <nav className="bg-white fixed top-0 left-0  z-50 w-full  shadow-sm">
-      <div className="container mx-auto px-2 md:px-0 py-2 md:py-0">
-        <div className="flex justify-between gap-x-1 lg:gap-x-0 h-16">
+      <div className="w-[95%] md:container mx-auto px-2 md:px-0 py-2 md:py-0">
+        <div className="flex justify-between gap-x-0 lg:gap-x-0 h-16">
           <div className="flex gap-x-5 lg:gap-x-24 items-center">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -53,7 +53,7 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
             {/* Light blue circular ring with infinite animation */}
 
             <motion.button
-              className="ring-8 ring-[#0494fc33] rounded-full relative text-nowrap bg-[#0494FC] hover:bg-[#0494FC]/90 text-white font-semibold text-sm md:text-base py-2 px-5 lg:px-10 cursor-pointer transition duration-300 overflow-hidden"
+              className="ring-8 ring-[#0494fc33] rounded-full relative text-nowrap bg-[#0494FC] hover:bg-[#0494FC]/90 text-white font-semibold text-sm md:text-base py-2 px-3 lg:px-10 cursor-pointer transition duration-300 overflow-hidden"
               onClick={onClickScroll}
               animate={{
                 scale: [1, 1.1, 1],
