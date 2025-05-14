@@ -13,6 +13,7 @@ function SubComplete() {
   const contactId = searchParams.get("contact_id") || null;
   const status = searchParams.get("status") || null;
   const funnelName = searchParams.get("funnelName") || null;
+  const email = searchParams.get("email") || null;
 
   useEffect(() => {
     const trailTags =
@@ -35,7 +36,7 @@ function SubComplete() {
       {/* navbar */}
       <Navbar />
       {/* main content */}
-      {status === "success" ? <Success /> : <Broken />}
+      {status === "success" ? <Success email={email} /> : <Broken />}
     </div>
   );
 }

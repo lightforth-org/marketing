@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Success = () => {
+const Success = ({ email }: { email: string | null }) => {
   return (
     <div className="w-full space-y-3 max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-xs text-center">
       <Image
@@ -19,7 +19,7 @@ const Success = () => {
         Your account has been successfully created, Find your temporary password
         in your inbox to log in.
       </p>
-      <Link href={"https://www.app.lightforth.org/auth/login"}>
+      <Link href={`https://www.app.lightforth.org/auth/login?email=${email}`}>
         <button
           type="button"
           className="mt-6 w-full rounded-md bg-[#1b9dfc] px-4 py-2 text-md cursor-pointer font-medium text-white shadow-sm hover:bg-[#21A0FC] focus:outline-none focus:ring-2 focus:ring-[#7CC7FD] focus:ring-offset-2"
