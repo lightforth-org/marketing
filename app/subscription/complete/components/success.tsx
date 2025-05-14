@@ -19,7 +19,7 @@ const Success = () => {
         Your account has been successfully created, Find your temporary password
         in your inbox to log in.
       </p>
-      <Link href={"https://www.app.lightforth.com/auth/login"}>
+      <Link href={"https://www.app.lightforth.org/auth/login"}>
         <button
           type="button"
           className="mt-6 w-full rounded-md bg-[#1b9dfc] px-4 py-2 text-md cursor-pointer font-medium text-white shadow-sm hover:bg-[#21A0FC] focus:outline-none focus:ring-2 focus:ring-[#7CC7FD] focus:ring-offset-2"
