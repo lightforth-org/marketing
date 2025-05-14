@@ -76,9 +76,9 @@ const TestimonialCarousel = () => {
       <div className="max-w-7xl mx-auto text-center">
         {/* Heading */}
 
-        <h2 className="text-2xl pb-2 md:text-3xl lg:text-4xl font-semibold text-gray-900">
+        <h1 className="uppercase text-3xl md:text-4xl font-extrabold text-black px-2">
           What Our Users Are Saying
-        </h2>
+        </h1>
 
         {/* Subheading */}
         <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">

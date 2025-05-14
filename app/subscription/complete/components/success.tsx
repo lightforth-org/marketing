@@ -22,7 +22,7 @@ const Success = () => {
       <Link href={"https://www.app.lightforth.com/auth/login"}>
         <button
           type="button"
-          className="mt-6 w-full rounded-md bg-[#1b9dfc] px-4 py-2 text-md cursor-pointer font-medium text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="mt-6 w-full rounded-md bg-[#1b9dfc] px-4 py-2 text-md cursor-pointer font-medium text-white shadow-sm hover:bg-[#21A0FC] focus:outline-none focus:ring-2 focus:ring-[#7CC7FD] focus:ring-offset-2"
         >
           Login to your account
         </button>

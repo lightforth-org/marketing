@@ -62,7 +62,7 @@ const HeroSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
 
         {/* YouTube Video Embed */}
         {/* YouTube Video Embed */}
-        <div className="relative my-10 md:my-12 max-w-6xl mx-auto ">
+        <div className="relative my-10 md:my-12 max-w-5xl mx-auto ">
           {/* gradient background */}
           <div className="absolute top-2 md:top-5 -left-2 md:-left-5 w-full h-full bg-gradient-to-b from-[#0494FC] to-[#22DF72] "></div>
 

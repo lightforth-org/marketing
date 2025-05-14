@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import CountdownTimer from "./timer";
+import { motion } from "framer-motion";
 
 const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
   return (
@@ -48,28 +49,24 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
             </div>
           </div>
 
-          <div className="flex justify-end items-center">
-            <button
-              className="relative text-nowrap bg-[#0494FC] hover:bg-[#0494FC]/90 text-white font-semibold text-sm py-3 px-2 lg:px-5 cursor-pointer rounded-md transition duration-300 overflow-hidden"
+          <div className="relative flex justify-end items-center">
+            {/* Light blue circular ring with infinite animation */}
+
+            <motion.button
+              className="ring-8 ring-[#0494fc33] rounded-full relative text-nowrap bg-[#0494FC] hover:bg-[#0494FC]/90 text-white font-semibold text-sm md:text-base py-2 px-5 lg:px-10 cursor-pointer transition duration-300 overflow-hidden"
               onClick={onClickScroll}
+              animate={{
+                scale: [1, 1.1, 1],
+                transition: {
+                  duration: 2.5,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatType: "loop" as const,
+                },
+              }}
             >
               <span className="relative z-10">Start Getting Jobs</span>
-
-              {/* Radar beam animation */}
-              <span className="absolute inset-0 origin-bottom-right">
-                <span className="absolute top-0 left-0 w-full h-full">
-                  <span
-                    className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-transparent to-white opacity-30 transform rotate-0 animate-[radar_2s_linear_infinite]"
-                    style={{
-                      transformOrigin: "bottom right",
-                    }}
-                  ></span>
-                </span>
-              </span>
-
-              {/* Subtle glow effect */}
-              <span className="absolute -inset-1 rounded-lg bg-[#0494FC]/20 animate-pulse opacity-70 blur-sm"></span>
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>

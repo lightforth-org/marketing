@@ -184,13 +184,14 @@ const PricingWithTestimonials = ({
       <SpecialOffer />
       <div className="md:max-w-5xl mx-auto sm:px-6 lg:px-8">
         {/* Headline */}
-        <div className="text-center mb-5 lg:mb-12">
-          <h2 className="text-2xl md:text-5xl font-semibold text-[#0494FC]">
+        <div className="max-w-3xl mx-auto text-center uppercase mb-5 lg:mb-12">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-black px-2">
             {heading}
-          </h2>
-          <p className="text-2xl md:text-5xl font-semibold text-gray-800">
+          </h1>
+
+          <h1 className="text-[#0099ff] text-3xl md:text-4xl font-extrabold  px-2">
             {subHeading}
-          </p>
+          </h1>
         </div>
 
         {/* Pricing Comparison Table */}
