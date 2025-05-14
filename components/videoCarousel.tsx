@@ -36,9 +36,9 @@ const VideoCard = ({ video }: { video: Video }) => {
   };
 
   return (
-    <div className="w-full rounded-lg overflow-hidden shadow-lg">
+    <div className="w-full rounded-xl overflow-hidden shadow-lg">
       {video.type === "youtube" && (
-        <div className="relative pb-[177.7%]">
+        <div className="relative pb-[150.7%] object-cover">
           {" "}
           {/* 16:9 aspect ratio */}
           <iframe
@@ -46,7 +46,7 @@ const VideoCard = ({ video }: { video: Video }) => {
               video.src
             )}?mute=0`}
             title={video.title}
-            className="absolute inset-0 w-full h-full border-0"
+            className="absolute inset-0 w-full h-full border-0 object-cover"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             onLoad={() => setIsLoading(false)}
@@ -112,12 +112,17 @@ const VideoGrid = () => {
     //   id: "video4",
     //   title: "Instagram Post",
     //   src: "https://www.instagram.com/p/DJULXYKujGb/",
-    //   type: "instagram",
+    //   type: "insctagram",
     // },
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-2 md:px-4 md:py-8 space-y-10">
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-2xl uppercase text-black md:text-4xl font-extrabold leading-tight md:leading-snug">
+          {`Your current job search strategy isn’t working. That’s why you’re here.`}
+        </h2>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {videos.map((video) => (
           <VideoCard key={video.id} video={video} />

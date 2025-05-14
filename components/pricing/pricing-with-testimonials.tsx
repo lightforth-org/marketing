@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-nocheck
-"use client";
 import { trackAction } from "@/lib/ampHelper";
+import SpecialOffer from "../special-offer";
+import PricingPlan from "./pricing-plan";
+import Testimonial from "./testimonial";
 import apiService from "@/services/api";
-import axios from "axios";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import AnimatedButton from "../animated-button";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { TbLoader2 } from "react-icons/tb";
 import { updateContactToDroppedOff } from "@/lib/ghlActions";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface PlanData {
   _id: string;
@@ -20,84 +20,37 @@ interface PlanData {
   // Other plan fields not needed for this specific implementation
 }
 
-// New PricingCard component to match the design exactly
-const PricingCard = ({
-  color,
-  price,
-  features,
-  onStartTrial,
-}: {
-  color: "purple" | "blue";
-  price: string;
-  features: string[];
-  onStartTrial: () => void;
-}) => {
-  return (
-    <div className="w-full rounded-3xl overflow-hidden shadow-sm bg-white border border-gray-100">
-      <div className="flex flex-col md:flex-row">
-        {/* What's Included Section - Now on the left */}
-        <div className="p-8 pb-12 md:w-1/2">
-          <h3 className="text-base font-bold mb-8">{`WHAT'S INCLUDED:`}</h3>
-          <div className="space-y-6">
-            {features.map((feature, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <div className="text-gray-500 mt-0.5">
-                  <svg
-                    className="w-4 h-4 text-gray-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 13l4 4L19 7"
-                    ></path>
-                  </svg>
-                </div>
-                <p className="text-gray-800 text-base">{feature}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+const addedText = [
+  "✓ 71% of users get at least 2 interviews before trial ends",
+  "✓ Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more",
+  "✓ Copilot answers interview questions even if they ask you to share your screen",
+];
+// Features for Pro plan - keep static as requested
+const proFeatures = [
+  "A+ ATS Resume Builder",
+  "AI Cover Letter Generator",
+  "100 Job Auto-apply",
+  "200 Matched jobs",
+  "5 Interview prep & salary negotiation",
+  "Interview Co-Pilot",
+  "30-day money back guarantee",
+];
 
-        {/* Price Section with CTA*/}
-        <div
-          className={`${
-            color === "purple" ? "bg-[#8c1d49]" : "bg-[#1055db]"
-          } text-white p-8 text-center md:w-1/2 flex flex-col justify-center m-4 rounded-lg`}
-        >
-          <div className="flex justify-center items-center mb-4 space-x-2">
-            <p className="text-xs font-medium text-center">TOTAL VALUE:</p>
-            <p className="text-4xl font-bold">{price}$</p>
-          </div>
-
-          <h3 className="text-2xl font-bold mb-6">
-            UNLOCK 3 DAYS OF
-            <br />
-            ACCESS FOR JUST $0
-          </h3>
-
-          <button
-            onClick={onStartTrial}
-            className="bg-white cursor-pointer text-gray-800 font-semibold py-3 px-6 rounded-full w-full max-w-xs mx-auto hover:bg-gray-100 transition mb-4"
-          >
-            Start 3 days free trial
-          </button>
-
-          <p className="text-xs text-center leading-tight">
-            MONTHLY MEMBERSHIP WILL REBILL AT ${price}/
-            <br />
-            MONTH AFTER 3 DAY TRIAL. CANCEL ANYTIME.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
+// Features for Premium plan - keep static as requested
+const premiumFeatures = [
+  "A+ ATS Resume Builder",
+  "AI Cover Letter Generator",
+  "200 Job Auto-apply",
+  "300 Matched jobs",
+  "5 Interview prep & salary negotiation",
+  "Interview Co-Pilot",
+  "Exclusive 5+ job offer adoption program",
+];
 
 const PricingWithTestimonials = ({
+  heading,
+  subHeading,
+  tagColor,
   selectedPlan,
   setSelectedPlan,
 }: {
@@ -108,40 +61,28 @@ const PricingWithTestimonials = ({
   setSelectedPlan: (plan: string) => void;
 }) => {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const funnel = searchParams.get("funnel") || null;
+  const contactId = searchParams.get("contactId") || null;
+  const authorizerId = searchParams.get("authorizerId") || null;
 
-  // Add state to store plan data from API
+  const { push } = useRouter();
+
   const [planData, setPlanData] = useState<{
     pro?: PlanData;
     premium?: PlanData;
   }>({});
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const funnel = searchParams.get("funnel") || null;
-  console.log({ funnel });
-
-  // const openModal = () => setIsModalOpen(true);
-
-  const xSignature =
-    funnel === "jobApplication"
-      ? process.env.NEXT_PUBLIC_X_SIGNATURE
-      : funnel === "autoApply"
-      ? process.env.NEXT_PUBLIC_AUTO_X_SIGNATURE
-      : process.env.NEXT_PUBLIC_VBP_X_SIGNATURE;
+  const [loading, setLoading] = useState(false);
 
   // Fetch plans on component mount
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await apiService.get<{
-          response: { data: PlanData[] };
-        }>(
+        const response = await apiService.get<{ data: PlanData[] }>(
           "/account/get-all-plans-for-partner",
           {},
           {
             headers: {
-              "x-signature": xSignature || "",
+              "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
             },
           }
         );
@@ -164,213 +105,181 @@ const PricingWithTestimonials = ({
     };
 
     fetchPlans();
-  }, [xSignature]);
+  }, []);
 
-  /**
-   * Handle payment button click with dynamic payment URLs
-   */
-
-  const handlePaymentClick = async (plan: string) => {
-    setIsLoading(true);
-    setError(null);
+  const createUserSub = async (planId: string) => {
     try {
-      // Track analytics event
-      trackAction("QValue_Bump", {
-        selectedPlan: plan,
-        planType: plan === "Pro" ? "Pro" : "Premium",
-        price: plan === "Pro" ? 78.99 : 128.99,
-      });
+      const payload: {
+        planId: string;
+        authorizerId: string;
+        contactId: string;
+      } = {
+        planId,
+        authorizerId: authorizerId || "",
+        contactId: contactId || "",
+      };
 
-      // Job Application funnel
-      if (funnel === "jobApplication") {
-        const checkoutUrl =
-          plan === "Pro"
-            ? "https://buy.stripe.com/bIY17CgY99cQ1e8eUW"
-            : "https://buy.stripe.com/eVa2bG6jvcp2bSM7st";
-        window.open(checkoutUrl, "_blank");
-        return;
+      const response = await apiService.post(
+        "/account/create-lightforth-partner-user-subscription",
+        payload,
+        {
+          headers: {
+            "x-signature": process.env.NEXT_PUBLIC_X_SIGNATURE || "",
+          },
+        }
+      );
+
+      if (response.statusCode !== 200) {
+        throw new Error("Failed to create subscription");
       }
 
-      const paymentPlanId =
-        plan === "Pro"
-          ? planData.pro?.paymentPlanId?._id
-          : planData.premium?.paymentPlanId?._id;
+      const paymentLink = response.response?.paymentLink?.data;
 
-      if (!paymentPlanId) {
-        console.error(`No payment plan ID found for ${plan} plan`);
-        return;
+      if (!paymentLink) {
+        throw new Error("Payment link not found");
       }
 
-      // Explicitly handle Auto Apply funnel routing
-      if (funnel === "autoApply") {
-        router.push(
-          `/confirm-details?funnel=autoApply&planId=${paymentPlanId}`
-        );
-        return;
-      }
+      await updateContactToDroppedOff(contactId, [`${funnel}-dropped_off`]);
 
-      // Default flow (VBP)
-      router.push(`/confirm-details?funnel=vbp&planId=${paymentPlanId}`);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unknown error occurred";
-      setError(errorMessage);
-      console.error("Payment submission error:", err);
-    } finally {
-      setIsLoading(false);
+      // Load the payment URL in the current window
+      window.location.href = paymentLink;
+
+      return true;
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      throw error;
     }
   };
 
-  console.log({ error });
+  const handlePaymentClick = async () => {
+    if (loading) return; // prevent double-clicks
+    setLoading(true);
+
+    try {
+      trackAction("QValue_Bump", {
+        selectedPlan,
+        planType: selectedPlan === "Pro" ? "Pro" : "Premium",
+        price: selectedPlan === "Pro" ? 78.99 : 128.99,
+      });
+
+      if (selectedPlan === "Pro" && planData.pro?.paymentPlanId?._id) {
+        await createUserSub(planData.pro.paymentPlanId._id);
+      } else if (
+        selectedPlan === "Premium" &&
+        planData.premium?.paymentPlanId?._id
+      ) {
+        await createUserSub(planData.premium.paymentPlanId._id);
+      }
+    } catch (err) {
+      console.error("Payment error:", err);
+      push("/subscription/complete?status=failed&contact_id=0");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Suspense
-      fallback={<TbLoader2 className="animate-spin text-blue-400 text-3xl" />}
-    >
-      <div className="bg-white py-12 md:py-16">
-        {/* Holiday Offer Banner */}
-        {/* <SpecialOffer /> */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Main Heading */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              TRANSFORM YOUR CAREER
-              <br />
-              JOURNEY WITH LIGHTFORTH
-            </h2>
+    <div className="bg-white py-12 md:py-16">
+      {/* Holiday Offer Banner */}
+      <SpecialOffer />
+      <div className="md:max-w-5xl mx-auto sm:px-6 lg:px-8">
+        {/* Headline */}
+        <div className="text-center mb-5 lg:mb-12">
+          <h2 className="text-2xl md:text-5xl font-semibold text-[#0494FC]">
+            {heading}
+          </h2>
+          <p className="text-2xl md:text-5xl font-semibold text-gray-800">
+            {subHeading}
+          </p>
+        </div>
+
+        {/* Pricing Comparison Table */}
+        <div className="flex flex-col gap-y-5 md:flex-row gap-x-5">
+          {/* Pro Plan */}
+          <div className="w-full space-y-5">
+            <PricingPlan
+              type="30 day Pro"
+              perDay="2.63"
+              formerPrice="124.99 USD"
+              newPrice="78.99 USD"
+              features={proFeatures}
+              tagColor={tagColor}
+              isSelected={selectedPlan === "Pro"}
+              onClick={() => setSelectedPlan("Pro")}
+            />
+            <Testimonial
+              quote='"I kept getting a headache wondering which company to choose from 9 job offers. Stay or go ahead!"'
+              role="Product Manager"
+              company="Quantum Finance"
+              imageSrc="/images/female.png"
+            />
           </div>
 
-          {/* New Pricing Cards */}
-          <div className=" gap-y-12 md:gap-x-8 max-w-5xl mx-auto mb-12">
-            {/* Pro Plan */}
-            <div className="w-full md:w-full my-8">
-              <PricingCard
-                color="purple"
-                price="79"
-                features={[
-                  "A+ ATS Resume Builder",
-                  "3 AI Cover Letter Generator",
-                  "50 Auto-apply Jobs",
-                  "50 Recommeded jobs",
-                  "3 Interview Prep sessions",
-                  "3 Interview Co-Pilot sessions",
-                ]}
-                onStartTrial={() => handlePaymentClick("Pro")}
-              />
-            </div>
-
-            {/* Premium Plan */}
-            <div className="w-full md:w-full">
-              <PricingCard
-                color="blue"
-                price="129"
-                features={[
-                  "A+ ATS Resume Builder",
-                  "5 AI Cover Letter Generator",
-                  "150 Auto-apply Jobs",
-                  "150 Recommeded jobs",
-                  "5 Interview Prep sessions",
-                  "5 Interview Co-Pilot sessions",
-                ]}
-                onStartTrial={() => handlePaymentClick("Premium")}
-              />
-            </div>
-          </div>
-
-          {/* Bottom Feature Bullets */}
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col gap-5 items-center mb-12 mt-8">
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-green-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                <p className="text-gray-700">
-                  71% of users get at least 2 interviews before trial ends
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-green-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                <p className="text-gray-700">
-                  Works for LinkedIn, Indeed, Glassdoor, ZipRecruiter and more
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-green-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                <p className="text-gray-700">
-                  Copilot answers interview questions even if they ask you to
-                  share your screen
-                </p>
-              </div>
-            </div>
-
-            {/* Payment Methods */}
-            <div className="text-center mb-10 mt-12">
-              <div className="flex justify-center items-center gap-2">
-                <p className="text-sm text-gray-600">We accept:</p>
-                <div className="flex justify-center">
-                  <Image
-                    src="/images/gateways.png"
-                    alt="Payment gateways"
-                    width={300}
-                    height={40}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Fine Print */}
-            <div className="max-w-3xl mx-auto text-xs text-gray-400 text-center">
-              <p>
-                {`By continuing, you agree that if you don't cancel at least 6 days prior to the end of the one-week introductory offer, you will automatically be charged the full price of 79.99 USD every month until you cancel in Settings. Learn more about our cancellation and refund policy in the Subscription Terms.`}
-              </p>
-              <p className="mt-6 mb-8">
-                By continuing, I agree that my credit/debit card data will be
-                stored and used for repeated purchase attempts in the event of
-                payment failure.
-              </p>
-            </div>
+          {/* Premium Plan */}
+          <div className="w-full space-y-5">
+            <PricingPlan
+              type="30 day Premium"
+              perDay="3.99"
+              formerPrice="254.99 USD"
+              newPrice="128.99 USD"
+              isPopular={true}
+              features={premiumFeatures}
+              tagColor={tagColor}
+              isSelected={selectedPlan === "Premium"}
+              onClick={() => setSelectedPlan("Premium")}
+            />
+            <Testimonial
+              quote='"I got 9 job offers but I needed a salary higher than $200K/year. This was the plan that gave me that."'
+              role="Chief Marketing Officer"
+              company="Chase"
+              imageSrc="/images/male.png"
+            />
           </div>
         </div>
 
-        {/* <Modal isOpen={isModalOpen} onClose={closeModal} title="Example Modal">
-        <PaymentDetails planId={planId} />
-      </Modal> */}
+        {/* CTA Button - Modified to use dynamic URLs */}
+        <div className="mt-10 max-w-xl mx-auto px-2">
+          <AnimatedButton onClick={handlePaymentClick}>
+            {loading ? (
+              <AiOutlineLoading3Quarters className="animate-spin mr-2 text-white text-xl" />
+            ) : (
+              "Start getting jobs, cancel anytime"
+            )}
+          </AnimatedButton>
+          <p className="text-xs text-gray-500 text-center mt-5">
+            30-day money-back guarantee
+          </p>
+        </div>
+
+        {/* Additional Text */}
+        <div className="text-center mt-8">
+          {addedText.map((text, index) => (
+            <p key={index} className="text-xs md:text-sm text-[#7A7A83] mb-2">
+              {/* svg */}
+
+              {text}
+            </p>
+          ))}
+        </div>
+
+        {/* Fine Print */}
+        <div className="mt-8 text-[10px] space-y-5 text-gray-300 text-center">
+          <p>
+            By continuing, you agree to pay 78.99USD for your plan and agree
+            that if you don&apos;t cancel at least 6 days prior to the end of
+            the one-week introductory offer, you will automatically be charged
+            the full price of 78.99 USD every month until you cancel in
+            Settings. Learn more about our cancellation and refund policy in the
+            Subscription Terms
+          </p>
+          <p className="max-w-lg mx-auto">
+            By continuing, I agree that my credit/debit card data will be stored
+            and used for repeated purchase attempts in the event of payment
+            failure
+          </p>
+        </div>
       </div>
-    </Suspense>
+    </div>
   );
 };
 
