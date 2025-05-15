@@ -17,7 +17,11 @@ function SubComplete() {
 
   useEffect(() => {
     const trailTags =
-      funnelName === "autoApply" ? ["F2-auto-trial"] : ["F3-vbp-trial"];
+      funnelName === "autoApply"
+        ? ["F2-auto-trial"]
+        : funnelName === "lightquiz-ai"
+        ? ["lightquiz-ai-trial"]
+        : ["F3-vbp-trial"];
 
     const requiredParams = ["contact_id", "status"];
     const isMissing = requiredParams.some((param) => !searchParams.get(param));
