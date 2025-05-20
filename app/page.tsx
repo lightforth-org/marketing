@@ -18,8 +18,19 @@ import VideoCarousel from "@/components/videoCarousel";
 import * as amplitude from "@amplitude/analytics-browser";
 import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <MainPage />
+    </Suspense>
+  );
+}
+
+const MainPage = () => {
+  const params = useSearchParams();
+  const email = params.get("email") || "";
   useEffect(() => {
     const sessionReplayTracking = sessionReplayPlugin();
     amplitude.add(sessionReplayTracking);
@@ -45,7 +56,10 @@ export default function Home() {
   }, []);
 
   const scrollToSection = () => {
-    window.open(`https://www.app.lightforth.org/auth/login`, "_self");
+    window.open(
+      `https://app.lightforth.org/auth/login?email=${email}`,
+      "_self"
+    );
   };
 
   return (
@@ -106,4 +120,4 @@ export default function Home() {
       </div>
     </Suspense>
   );
-}
+};
