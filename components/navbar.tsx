@@ -1,8 +1,7 @@
 "use client";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import CountdownTimer from "./timer";
-import { motion } from "framer-motion";
 
 const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
   return (
@@ -38,7 +37,7 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
                 </Link>
               </div>
             </div>
-
+            {/*
             <div className="inline-flex flex-col items-start lg:flex-row lg:items-center gap-x-1">
               <div className="text-[10px] lg:text-sm font-semibold text-black tracking-wide">
                 DISCOUNT IS RESERVED FOR
@@ -46,7 +45,7 @@ const Navbar = ({ onClickScroll }: { onClickScroll: () => void }) => {
               <div className="text-[#0494FC] text-xl lg:text-lg font-bold">
                 <CountdownTimer durationInMinutes={7} />
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="relative flex justify-end items-center">

@@ -7,7 +7,6 @@ import { Suspense } from "react";
 // import Goals from '@/components/goals';
 import HeroSection from "@/components/hero";
 import Navbar from "@/components/navbar";
-import PricingWithTestimonials from "@/components/pricing/pricing-with-testimonials";
 // import RatingsSection from '@/components/ratings';
 // import TestimonialCarousel from '@/components/testimonials';
 import Footer from "@/components/footer";
@@ -19,12 +18,8 @@ import VideoCarousel from "@/components/videoCarousel";
 import * as amplitude from "@amplitude/analytics-browser";
 import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
 import { useEffect, useRef, useState } from "react";
-import { TbLoader2 } from "react-icons/tb";
 
 export default function Home() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [selectedPlan, setSelectedPlan] = useState<string>("Pro");
-
   useEffect(() => {
     const sessionReplayTracking = sessionReplayPlugin();
     amplitude.add(sessionReplayTracking);
@@ -50,9 +45,7 @@ export default function Home() {
   }, []);
 
   const scrollToSection = () => {
-    if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    window.open(`https://www.app.lightforth.org/auth/login`, "_self");
   };
 
   return (
@@ -61,7 +54,7 @@ export default function Home() {
         <Navbar onClickScroll={scrollToSection} />
         <main className="px-3 md:px-0">
           <HeroSection onClickScroll={scrollToSection} />
-          <section ref={sectionRef}>
+          {/* <section ref={sectionRef}>
             <Suspense
               fallback={
                 <div className="flex justify-center items-center p-8">
@@ -77,7 +70,7 @@ export default function Home() {
                 setSelectedPlan={setSelectedPlan}
               />
             </Suspense>
-          </section>
+          </section> */}
 
           <VideoCarousel />
           <Gurantee />
@@ -89,7 +82,7 @@ export default function Home() {
           <RatingsSection />
           {/* <ResultsGallerySection /> */}
           {/* <Goals /> */}
-
+          {/*
           <section ref={sectionRef}>
             <Suspense
               fallback={
@@ -106,7 +99,7 @@ export default function Home() {
                 setSelectedPlan={setSelectedPlan}
               />
             </Suspense>
-          </section>
+          </section> */}
           <FAQSection onClickScroll={scrollToSection} />
         </main>
         <Footer />
