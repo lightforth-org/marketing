@@ -30,6 +30,9 @@ export default function Home() {
 
 const MainPage = () => {
   const params = useSearchParams();
+  const email = params.get("email") || "";
+  // const contactId = params.get("contactId") || "";
+
   useEffect(() => {
     const sessionReplayTracking = sessionReplayPlugin();
     amplitude.add(sessionReplayTracking);
@@ -55,7 +58,10 @@ const MainPage = () => {
   }, []);
 
   const scrollToSection = () => {
-    window.open(`https://app.lightforth.org/auth/signup`, "_self");
+    window.open(
+      `https://app.lightforth.org/auth/onboard?email=${email}`,
+      "_self"
+    );
   };
 
   return (
