@@ -122,7 +122,7 @@ const FAQSection = ({ onClickScroll }: { onClickScroll: () => void }) => {
         className="text-center max-w-sm py-5 mx-auto px-2"
         onClick={onClickScroll}
       >
-        <AnimatedButton>Start Getting Jobs - 3 days free</AnimatedButton>
+        <AnimatedButton onClick={() => {}}>Start Getting Jobs - 3 days free</AnimatedButton>
       </div>
     </section>
   );
