@@ -42,7 +42,7 @@ const FreePlan = ({ onCtaClick }: { onCtaClick: () => void }) => {
         </div>
 
         <p className="text-center text-xs">No credit card required</p>
-        <div className="flex gap-x-5 gap-y-5 flex-wrap">
+        <div className="flex gap-x-5 gap-y-5 flex-col md:flex-row">
           <Testimonial
             quote='"I kept getting a headache wondering which company to choose from 9 job offers. Stay or go ahead!"'
             role="Product Manager"
