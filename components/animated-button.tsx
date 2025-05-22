@@ -7,7 +7,7 @@ export default function AnimatedButton({
   className = "", // Add className prop with a default empty string
 }: {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick: () => void;
   className?: string; // Define the className prop
 }) {
   const [isHovered, setIsHovered] = useState(false);

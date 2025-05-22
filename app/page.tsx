@@ -19,6 +19,7 @@ import * as amplitude from "@amplitude/analytics-browser";
 import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import FreePlan from "@/components/pricing/free-plan";
 
 export default function Home() {
   return (
@@ -87,6 +88,7 @@ const MainPage = () => {
               />
             </Suspense>
           </section> */}
+          <FreePlan onCtaClick={scrollToSection} />
 
           <VideoCarousel />
           <Gurantee />
@@ -116,6 +118,8 @@ const MainPage = () => {
               />
             </Suspense>
           </section> */}
+
+          <FreePlan onCtaClick={scrollToSection} />
           <FAQSection onClickScroll={scrollToSection} />
         </main>
         <Footer />

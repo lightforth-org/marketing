@@ -75,3 +75,18 @@ const PricingPlan = ({
 );
 
 export default PricingPlan;
+
+export const FreePlanFeatures = ({ features = [] }: { features: string[] }) => {
+  return (
+    <div className="p-6 relative border-2 rounded-xl overflow-hidden shadow-xl cursor-pointer transition-all duration-300 border-[#AC74E4] shadow-blue-100 border-solid  ">
+      <div className="py-3 border-b border-0 border-gray-200 mb-5">
+        <h2 className="text-xl">What you get in 24hours</h2>
+      </div>
+      <ul className="space-y-3">
+        {features.map((feature, index) => (
+          <FeatureItem key={index} text={feature} />
+        ))}
+      </ul>
+    </div>
+  );
+};
